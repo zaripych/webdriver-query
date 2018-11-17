@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Empty Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script type="application/javascript">
+      const logEvent = (...args) => {
+        const logs = document.getElementById("eventLog")
+        const count = logs.children.length
+        const entry = document.createElement("div")
+        entry.setAttribute("data-id", count + 1)
+        entry.innerText = JSON.stringify([...args])
+        logs.appendChild(entry)
+      }
+
+      /**
+       * @param eventName {string}
+       * @param element {HTMLElement}
+       */
+      const addListener = (eventName, element) => {
+        element.addEventListener(eventName, evt => {
+          logEvent({
+            elementId: evt.target.id,
+            type: eventName,
+            state: {
+              value: evt.target.value,
+              selected: evt.target.selected
+            },
+            event: evt
+          })
+          evt.preventDefault()
+          evt.stopPropagation()
+        })
+      }
+
+      window.addEventListener("load", function(win, ev) {
+        document.getElementById("value-attribute-1").value = "Value set by JS"
+        document.getElementById("value-attribute-2").value = "Value set by JS"
+
+        const allEvents = [
+          "click",
+          "change",
+          "blur",
+          "focus",
+          "select"
+          // "keydown",
+          // "keyup",
+          // "keypress",
+        ]
+
+        const subscribeTo = [
+          "#select_id",
+          "#select_id option",
+          "#select_multiple_id",
+          "#select_multiple_id option"
+        ]
+
+        subscribeTo.forEach(selector => {
+          document.querySelectorAll(selector).forEach(el => {
+            allEvents.forEach(name => addListener(name, el))
+          })
+        })
+      })
+
+      setTimeout(function() {
+        document.getElementById("timerTarget").innerHTML = "10"
+        setInterval(function() {
+          var value = parseInt(
+            document.getElementById("timerTarget").innerHTML,
+            10
+          )
+          document.getElementById("timerTarget").innerHTML = value + 1
+        }, 1000)
+
+        var div = document.createElement("div")
+        div.innerHTML = "Spinning..."
+        div.id = "simulatedSpinner"
+
+        document.getElementById("spinnerInsertTarget").appendChild(div)
+
+        setInterval(function() {
+          const text = document.getElementById("spinnerInsertTarget").innerHTML
+          if (!text || text === "Loaded") {
+            document.getElementById("spinnerInsertTarget").appendChild(div)
+          } else {
+            document.getElementById("spinnerInsertTarget").innerHTML = "Loaded"
+          }
+        }, 3000)
+      }, 3000)
+    </script>
+  </head>
+
+  <body>
+    <div>Hello world!</div>
+    <div id="id_01">A div with id_01</div>
+    <div id="idNum" data-number="3" data-float="3.14">456.32</div>
+    <div id="with-children">
+      <div id="child1" class="child"></div>
+      <div id="child2" class="child"></div>
+    </div>
+    <div id="multiple-elements">
+      <div class="row">
+        <div class="column-id">1</div>
+        <div class="column-name">Mark</div>
+        <div class="column-age">2.5</div>
+        <div class="column-class">Alchemist</div>
+      </div>
+      <div class="row">
+        <div class="column-id">2</div>
+        <div class="column-name">Abi</div>
+        <div class="column-age">3.5</div>
+        <div class="column-class">Rogue</div>
+      </div>
+      <div class="row">
+        <div class="column-id">3</div>
+        <div class="column-name">Claire</div>
+        <div class="column-age">4</div>
+        <div class="column-class">Librarian</div>
+      </div>
+      <div class="row">
+        <div class="column-id">4</div>
+        <div class="column-name">Danny</div>
+        <div class="column-age">1.9</div>
+        <div class="column-class">Ninja</div>
+      </div>
+      <div class="row">
+        <div class="column-id">5</div>
+        <div class="column-name">Gene</div>
+        <div class="column-age">32</div>
+        <div class="column-class">Alchemist</div>
+      </div>
+      <div class="row">
+        <div class="column-id">6</div>
+        <div class="column-name">Marsele</div>
+        <div class="column-age">32</div>
+        <div class="column-class">Rogue</div>
+      </div>
+      <div class="row">
+        <div class="column-id">7</div>
+        <div class="column-name">Natalia</div>
+        <div class="column-age">32</div>
+        <div class="column-class">Librarian</div>
+      </div>
+      <div class="row">
+        <div class="column-id">8</div>
+        <div class="column-name">Alex</div>
+        <div class="column-age">32</div>
+        <div class="column-class">Ninja</div>
+      </div>
+    </div>
+    <div id="multiline-text">
+      Hello<br />
+      There<strong> This is a test </strong>and another<br />br
+    </div>
+    <div id="valid"></div>
+    <div class="target"></div>
+    <div class="target"></div>
+    <div class="single"></div>
+    <div id="id-attr" data-something="attribute-value"></div>
+    <input id="value-attribute-0" value="Something" />
+    <input id="value-attribute-1" />
+    <input id="value-attribute-2" value="Value which will be overriden" />
+    <div id="empty-attribute" data-empty=""></div>
+    <div id="id-non-empty">Non empty element</div>
+    <div id="id-css" style="width: 5px;"></div>
+    <button id="id-disabled-0" disabled="disabled">Disabled #1</button>
+    <button id="id-disabled-1" disabled>Disabled #2</button>
+    <button id="id-disabled-2" disabled>Disabled #3</button>
+    <option id="id-not-selected">Option Not Selected</option>
+    <option id="id-selected-0" selected="selected">Option 1</option>
+    <option id="id-selected-1" selected>Option 2</option>
+    <div id="id-inner"><p>Hello world!</p></div>
+    <div id="id-class" class="some-long-class another-class">
+      <p>Hello world!</p>
+    </div>
+    <div id="id-no-class"><p>Hello world!</p></div>
+    <option id="attributes-test" selected class="some-class">
+      <p>I'm an option</p>
+    </option>
+    <option id="attributes-test-2" disabled style="width: 100%;">
+      <p>I'm another option</p>
+    </option>
+    <span id="visible">I'm a visible span</span>
+    <span id="none" style="display: none;">I'm a none span</span>
+    <span id="hidden" style="visibility: hidden;">I'm a hidden span</span>
+    <span id="collapsed" style="visibility: collapsed;"
+      >I'm a collapsed span</span
+    >
+    <span id="tag-name-0"></span> <span id="tag-name-1"></span>
+    <button
+      id="click-button"
+      type="button"
+      onclick="event.target.innerHTML = 'Clicked'"
+    >
+      Button Label
+    </button>
+    <form
+      id="form"
+      name="form"
+      onsubmit="event.preventDefault(); document.getElementById('form-div').innerHTML = 'On Submit Triggered';"
+    >
+      <div id="form-div"></div>
+      <input id="form-input" type="submit" />Submit
+    </form>
+    <button
+      id="force-reload-button"
+      type="button"
+      onclick="window.location.reload();"
+    >
+      Force Page Reload
+    </button>
+    <input id="clear-value-0" value="Some value to be cleared" />
+    <input id="append-value-0" value="Some " />
+    <input
+      id="value-input"
+      onchange="document.getElementById('input-shadow').innerHTML = event.target.value"
+    />
+    <div id="input-shadow"></div>
+    <div>
+      <select id="select_id">
+        <option id="opt1">Option 1</option>
+        <option id="opt2">Option 2</option>
+        <option id="opt3">Option 3</option>
+        <option id="opt4">Option 4</option>
+        <option id="opt5">Option 5</option>
+        <option id="opt6">Option 6</option>
+      </select>
+    </div>
+    <div>
+      <select id="select_multiple_id" multiple>
+        <option id="opt1">Option 1</option>
+        <option id="opt2">Option 2</option>
+        <option id="opt3">Option 3</option>
+        <option id="opt4">Option 4</option>
+        <option id="opt5">Option 5</option>
+        <option id="opt6">Option 6</option>
+      </select>
+    </div>
+    <div id="eventLog"></div>
+    <div>
+      <div>Item - 0</div>
+      <div>Item - 1</div>
+      <div>Item - 2</div>
+      <div>Item - 3</div>
+      <div>Item - 4</div>
+      <div>Item - 5</div>
+      <div>Item - 6</div>
+      <div>Item - 7</div>
+      <div>Item - 8</div>
+      <div>Item - 9</div>
+      <div>Item - 10</div>
+      <div>Item - 11</div>
+      <div>Item - 12</div>
+      <div>Item - 13</div>
+      <div>Item - 14</div>
+      <div>Item - 15</div>
+      <div>Item - 16</div>
+      <div>Item - 17</div>
+      <div>Item - 18</div>
+      <div>Item - 19</div>
+      <div>Item - 20</div>
+      <div>Item - 21</div>
+      <div>Item - 22</div>
+      <div>Item - 24</div>
+      <div>Item - 25</div>
+      <div>Item - 26</div>
+      <div>Item - 27</div>
+      <div>Item - 28</div>
+      <div>Item - 29</div>
+      <div>Item - 30</div>
+      <div>Item - 31</div>
+      <div>Item - 32</div>
+      <div>Item - 33</div>
+      <div>Item - 34</div>
+      <div>Item - 35</div>
+      <div id="item-36">Item - 36</div>
+    </div>
+    <div id="timerTarget">0</div>
+    <div id="spinnerInsertTarget"></div>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+{
+	// See http://go.microsoft.com/fwlink/?LinkId=827846
+	// for the documentation about the extensions.json format
+	"recommendations": [
+		// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+		"Arjun.swagger-viewer",
+		"EditorConfig.EditorConfig",
+		"dbaeumer.vscode-eslint",
+		"eamodio.gitlens",
+		"eg2.tslint",
+		"eg2.vscode-npm-script",
+		"mrmlnc.vscode-less",
+		"ms-vscode.azure-account",
+		"ms-vscode.csharp",
+		"ms-vscode.node-debug2",
+		"ms-vscode.PowerShell",
+		"msjsdiag.debugger-for-chrome",
+		"robertohuertasm.vscode-icons",
+		"ryanluker.vscode-coverage-gutters",
+		"shinnn.stylelint",
+		"streetsidesoftware.code-spell-checker",
+		"vsmobile.vscode-react-native"
+	]
+}

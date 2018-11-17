@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json.schemastore.org/tslint",
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "rules": {
+    "indent": [true, "spaces", 2],
+    "no-parameter-reassignment": true,
+    "no-any": false,
+    "no-empty-interface": false,
+    "no-unused-expression": true,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "quotemark": [true, "single"],
+    "trailing-comma": [
+      false,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
+    "variable-name": [true, "allow-leading-underscore"],
+    "semicolon": [false],
+    "no-implicit-dependencies": [true, "dev"]
+  }
+}

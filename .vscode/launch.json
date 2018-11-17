@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest Tests",
+      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+      "args": ["-i"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "outFiles": ["${workspaceRoot}/dist/**/*"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest Current Test File",
+      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+      "args": ["--verbose", "-i", "--testPathPattern", "${fileBasenameNoExtension}"],
+      "autoAttachChildProcesses": true,
+      "env": {
+        "TEST_BROWSERS_PATTERN": "chrome"
+      }
+    }
+  ]
+}

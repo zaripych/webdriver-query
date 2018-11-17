@@ -1,0 +1,28 @@
+{
+  "tslint.configFile": "tslint.json",
+  "cSpell.words": [
+    "chromedriver",
+    "defaultchecked",
+    "defaultselected",
+    "formnovalidate",
+    "iscontenteditable",
+    "ismap",
+    "itemscope",
+    "nohref",
+    "noresize",
+    "noshade",
+    "novalidate",
+    "nowrap",
+    "pubdate",
+    "truespeed",
+    "truthy",
+    "willvalidate",
+    "zaripych"
+  ],
+  "eslint.enable": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.semi": false,
+  "prettier.tslintIntegration": true,
+  "editor.formatOnSave": true,
+  "terminal.integrated.scrollback": 100000
+}
