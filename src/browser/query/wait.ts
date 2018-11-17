@@ -1,30 +1,25 @@
-import * as Errors from '../../shared/errors';
-import {
-  QueryBuilder,
-  IInstanceWaitOptions,
-  IAsyncLogger,
-  noOpLogger
-} from '../../shared';
+import * as Errors from '../../shared/errors'
+import { QueryBuilder, IInstanceWaitOptions, IAsyncLogger, noOpLogger } from '../../shared'
 
-export { IInstanceWaitOptions };
+export { IInstanceWaitOptions }
 
 export interface ICommonWaitOptions {
-  shouldIgnoreError?: (err: Error) => boolean;
-  timeout: number;
-  pollPeriod: number;
-  query?: QueryBuilder;
-  logger?: IAsyncLogger;
+  shouldIgnoreError?: (err: Error) => boolean
+  timeout: number
+  pollPeriod: number
+  query?: QueryBuilder
+  logger?: IAsyncLogger
 }
 
 export interface IWaitOptions<Y> extends ICommonWaitOptions {
-  condition: () => Promise<Y>;
+  condition: () => Promise<Y>
 }
 
 export interface ICoreWaitOptions<C, Y> extends ICommonWaitOptions {
   condition: () => Promise<{
-    stopWhen: C;
-    returnWhenStopped: Y | PromiseLike<Y>;
-  }>;
+    stopWhen: C
+    returnWhenStopped: Y | PromiseLike<Y>
+  }>
 }
 
 export const queryWaitOnce = <T, U>(
@@ -34,149 +29,147 @@ export const queryWaitOnce = <T, U>(
   query: QueryBuilder,
   logger: IAsyncLogger
 ) => {
-  let waited = false;
-  let waitErr: Error | null = null;
+  let waited = false
+  let waitErr: Error | null = null
 
   const waitOnce = () => {
     const waitResult = () => {
       if (waitErr) {
-        return Promise.reject(waitErr);
+        return Promise.reject(waitErr)
       }
-      return preWait();
-    };
+      return preWait()
+    }
 
     if (waited) {
-      return waitResult();
+      return waitResult()
     }
 
     const doWaitOnce = () => {
-      waited = true;
+      waited = true
 
       return waitFor({
         condition,
         ...waitOptions,
         query,
-        logger
+        logger,
       })
         .then(() => preWait())
-        .catch((err) => {
-          waitErr = err;
-          return Promise.reject(err);
-        });
-    };
+        .catch(err => {
+          waitErr = err
+          return Promise.reject(err)
+        })
+    }
 
-    return preWait().then(doWaitOnce, doWaitOnce);
-  };
+    return preWait().then(doWaitOnce, doWaitOnce)
+  }
 
-  return waitOnce;
-};
+  return waitOnce
+}
 
 export function waitFor<Y>(options: IWaitOptions<Y>): Promise<Y> {
   return waitForCore({
     condition: () => {
-      return options.condition().then((result) => {
+      return options.condition().then(result => {
         return {
           stopWhen: result,
-          returnWhenStopped: result
-        };
-      });
+          returnWhenStopped: result,
+        }
+      })
     },
     shouldIgnoreError: options.shouldIgnoreError,
     timeout: options.timeout,
     pollPeriod: options.pollPeriod,
     query: options.query,
-    logger: options.logger
-  });
+    logger: options.logger,
+  })
 }
 
 function waitForCore<C, Y>(options: ICoreWaitOptions<C, Y>): Promise<Y> {
-  const ignoreAllErrors = () => true;
-  const ignoreError = options.shouldIgnoreError || ignoreAllErrors;
+  const ignoreAllErrors = () => true
+  const ignoreError = options.shouldIgnoreError || ignoreAllErrors
 
-  let timesPolled = 0;
+  let timesPolled = 0
 
-  const effectiveTimeout = options.timeout;
-  const effectivePollPeriod = options.pollPeriod;
+  const effectiveTimeout = options.timeout
+  const effectivePollPeriod = options.pollPeriod
 
-  const condition = options.condition;
-  const query = options.query;
+  const condition = options.condition
+  const query = options.query
 
   const buildTimeoutMessage = () => {
-    const message = 'Timeout when waiting for condition to be truthy';
+    const message = 'Timeout when waiting for condition to be truthy'
     const additionalInfo = [
       `\n  Timeout:      ${effectiveTimeout / 1000}s`,
       `\n  Poll Period:  ${effectivePollPeriod / 1000}s`,
-      `\n  Times Polled: ${timesPolled}`
-    ].join('');
+      `\n  Times Polled: ${timesPolled}`,
+    ].join('')
     return !query
       ? `${message}${additionalInfo}`
-      : `${message}, when executing a sub-query ${query.buildDescription(
-          1
-        )}${additionalInfo}`;
-  };
+      : `${message}, when executing a sub-query ${query.buildDescription(1)}${additionalInfo}`
+  }
 
-  const mainLogger = options.logger || noOpLogger;
+  const mainLogger = options.logger || noOpLogger
 
-  const queryInfo = () => (query ? ` for ${query.buildDescription(1)}` : '');
+  const queryInfo = () => (query ? ` for ${query.buildDescription(1)}` : '')
 
-  const logger = mainLogger.debug(() => `waiting started ${queryInfo()}`);
+  const logger = mainLogger.debug(() => `waiting started ${queryInfo()}`)
 
-  let timeoutReached = false;
+  let timeoutReached = false
   const timer = setTimeout(() => {
-    logger.debug(`timeout has happened ${queryInfo()}`);
+    logger.debug(`timeout has happened ${queryInfo()}`)
 
-    timeoutReached = true;
-  }, effectiveTimeout);
+    timeoutReached = true
+  }, effectiveTimeout)
   const loop = () => {
     const safeCondition = () => {
       try {
-        timesPolled += 1;
-        return condition();
+        timesPolled += 1
+        return condition()
       } catch (exc) {
-        return Promise.reject(exc);
+        return Promise.reject(exc)
       }
-    };
+    }
     const continueLoop = () => {
       return new Promise<{
-        stopWhen: C;
-        returnWhenStopped: Y | PromiseLike<Y>;
+        stopWhen: C
+        returnWhenStopped: Y | PromiseLike<Y>
       }>((res, rej) => {
         setTimeout(() => {
           loop()
-            .then((resolvedValue) => {
-              res(resolvedValue);
+            .then(resolvedValue => {
+              res(resolvedValue)
             })
-            .catch((err) => {
-              rej(err);
-            });
-        }, effectivePollPeriod);
-      });
-    };
+            .catch(err => {
+              rej(err)
+            })
+        }, effectivePollPeriod)
+      })
+    }
     const checkTimeout = (err?: Error) => {
       if (timeoutReached) {
-        throw new Errors.TimeoutError(buildTimeoutMessage(), err);
+        throw new Errors.TimeoutError(buildTimeoutMessage(), err)
       }
-    };
+    }
     return safeCondition()
-      .catch((err) => {
+      .catch(err => {
         if (!ignoreError(err)) {
-          return Promise.reject(err);
+          return Promise.reject(err)
         }
-        checkTimeout(err);
-        return continueLoop();
+        checkTimeout(err)
+        return continueLoop()
       })
-      .then((value) => {
+      .then(value => {
         if (value.stopWhen && value.returnWhenStopped) {
-          return Promise.resolve(value);
+          return Promise.resolve(value)
         }
-        checkTimeout();
-        return continueLoop();
-      });
-  };
-  return loop().then((value) => {
-    logger.debug(`timeout cancelled ${queryInfo()}`);
+        checkTimeout()
+        return continueLoop()
+      })
+  }
+  return loop().then(value => {
+    logger.debug(`timeout cancelled ${queryInfo()}`)
 
-    clearTimeout(timer);
-    return Promise.resolve(value.returnWhenStopped);
-  });
+    clearTimeout(timer)
+    return Promise.resolve(value.returnWhenStopped)
+  })
 }

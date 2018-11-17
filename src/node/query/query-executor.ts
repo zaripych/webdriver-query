@@ -3,49 +3,43 @@ import {
   ExecutionError,
   ErrorLike,
   ArgumentError,
-  BootstrapError
-} from '../../shared/errors';
+  BootstrapError,
+} from '../../shared/errors'
 
-import {
-  QueryBuilder,
-  IConfig,
-  IDriver,
-  IAsyncLogger,
-  noOpLogger
-} from '../../shared';
-import { locatorToSelector } from './locator-to-selector';
-import { IErrorLike } from '../../shared/errors/error-like';
-import { PageReloadedError } from '../../shared/errors/page-reloaded-error';
+import { QueryBuilder, IConfig, IDriver, IAsyncLogger, noOpLogger } from '../../shared'
+import { locatorToSelector } from './locator-to-selector'
+import { IErrorLike } from '../../shared/errors/error-like'
+import { PageReloadedError } from '../../shared/errors/page-reloaded-error'
 
 interface IScriptResult<T> {
-  value?: T;
-  type: string;
-  error?: IErrorLike;
+  value?: T
+  type: string
+  error?: IErrorLike
 }
 
 const restoreValue = <T>(result: IScriptResult<T>): T | null => {
   // weird but sometimes we get result.value === null
   // even though the value was an empty string on browser side (Edge)
   if (result.type === 'string' && !result.value) {
-    return ('' as any) as T;
+    return ('' as any) as T
   }
-  return result.value === undefined ? null : result.value;
-};
+  return result.value === undefined ? null : result.value
+}
 
 export class QueryExecutor {
   public static readonly pageReloadErrors: RegExp[] = [
     /document unloaded while waiting for result/,
-    /Callback was not called before the unload event/
-  ];
-  public readonly driver: IDriver;
-  public readonly config?: Partial<IConfig>;
+    /Callback was not called before the unload event/,
+  ]
+  public readonly driver: IDriver
+  public readonly config?: Partial<IConfig>
 
-  private readonly logger: IAsyncLogger;
-  private readonly precondition: () => Promise<void>;
-  private readonly install?: () => Promise<void>;
+  private readonly logger: IAsyncLogger
+  private readonly precondition: () => Promise<void>
+  private readonly install?: () => Promise<void>
 
   private get scriptDriver() {
-    return this.driver as IDriver;
+    return this.driver as IDriver
   }
 
   constructor(
@@ -58,38 +52,38 @@ export class QueryExecutor {
     if (!driver) {
       throw new ArgumentError(
         '`driver` is mandatory parameter and should refer to a valid WebDriver'
-      );
+      )
     }
     if (typeof driver.executeAsyncScript !== 'function') {
       throw new ArgumentError(
         '`driver` is mandatory parameter and should refer to a valid WebDriver'
-      );
+      )
     }
-    this.driver = driver;
-    this.precondition = precondition;
-    this.config = config;
-    this.logger = logger || noOpLogger;
-    this.install = install;
+    this.driver = driver
+    this.precondition = precondition
+    this.config = config
+    this.logger = logger || noOpLogger
+    this.install = install
   }
 
   public locatorToSelector(locator: any): string {
-    return locatorToSelector(locator);
+    return locatorToSelector(locator)
   }
 
   public perform<T>(queryBuilder: QueryBuilder): Promise<T> {
     if (!queryBuilder || !(queryBuilder instanceof QueryBuilder)) {
-      throw new Error('Expected query builder to be passed');
+      throw new Error('Expected query builder to be passed')
     }
 
-    const driver = this.scriptDriver;
-    const config = this.config;
+    const driver = this.scriptDriver
+    const config = this.config
 
     const query = queryBuilder.prependConstructor(
       QueryBuilder.constructorName,
       ...(config ? [config] : [])
-    );
+    )
 
-    const call = query.build();
+    const call = query.build()
 
     const script = `
     try {
@@ -121,35 +115,29 @@ export class QueryExecutor {
           stack: err.stack
         }
       });
-    }`;
+    }`
 
-    const log = this.logger.debug(() => [
-      'executing script: ',
-      call.script,
-      call.arguments
-    ]);
+    const log = this.logger.debug(() => ['executing script: ', call.script, call.arguments])
 
     const executeScriptNoRetry = () =>
       this.precondition()
         .then(() =>
-          driver
-            .executeAsyncScript<IScriptResult<T>>(script, ...call.arguments)
-            .then(value => {
-              if (value.error) {
-                if (ErrorLike.isErrorLike(value.error)) {
-                  throw ErrorLike.createError(value.error);
-                } else {
-                  throw new Error(value.error);
-                }
+          driver.executeAsyncScript<IScriptResult<T>>(script, ...call.arguments).then(value => {
+            if (value.error) {
+              if (ErrorLike.isErrorLike(value.error)) {
+                throw ErrorLike.createError(value.error)
+              } else {
+                throw new Error(value.error)
               }
-              log.debug(() => ['finished with value', value]);
+            }
+            log.debug(() => ['finished with value', value])
 
-              // this check below is to ensure same behavior as WebDriver
-              return restoreValue(value) as T;
-            })
+            // this check below is to ensure same behavior as WebDriver
+            return restoreValue(value) as T
+          })
         )
         .catch((err: Error) => {
-          log.debug(() => ['finished with error', err.name, err.message]);
+          log.debug(() => ['finished with error', err.name, err.message])
           if (!(err instanceof QueryError)) {
             if (err.name === 'JavascriptError') {
               if (this.isPageReloadError(err)) {
@@ -160,7 +148,7 @@ export class QueryExecutor {
                     err,
                     query
                   )
-                );
+                )
               }
               return Promise.reject(
                 new ExecutionError(
@@ -169,22 +157,20 @@ export class QueryExecutor {
                   query,
                   `\n\n  in script:\n${script}\n`
                 )
-              );
+              )
             }
-            return Promise.reject(
-              new ExecutionError(`An error occurred`, err, query)
-            );
+            return Promise.reject(new ExecutionError(`An error occurred`, err, query))
           } else {
-            return Promise.reject(err);
+            return Promise.reject(err)
           }
-        });
+        })
 
     return executeScriptNoRetry().catch(err => {
       if (this.install && err instanceof BootstrapError) {
-        return this.install().then(() => executeScriptNoRetry());
+        return this.install().then(() => executeScriptNoRetry())
       }
-      return Promise.reject(err);
-    });
+      return Promise.reject(err)
+    })
   }
 
   public waitForUnload(timeoutMs: number) {
@@ -197,15 +183,13 @@ export class QueryExecutor {
       )
       .catch(err => {
         if (this.isPageReloadError(err)) {
-          return Promise.resolve();
+          return Promise.resolve()
         }
-        return Promise.reject(err);
-      });
+        return Promise.reject(err)
+      })
   }
 
   private isPageReloadError(error: Error): boolean {
-    return QueryExecutor.pageReloadErrors.some(pattern =>
-      pattern.test(error.message)
-    );
+    return QueryExecutor.pageReloadErrors.some(pattern => pattern.test(error.message))
   }
 }

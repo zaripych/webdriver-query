@@ -19,7 +19,8 @@
     "test": "jest --testPathIgnorePatterns \"__tests__/browser/.*\" --coverage --coveragePathIgnorePatterns \"src/node\" \"__tests__/utils\"",
     "test-browsers-all": "yarn build && jest --testPathIgnorePatterns \"__tests__/browser-jsdom/.*\" --coverage --coveragePathIgnorePatterns \"src/browser\" \"__tests__/utils\" -i",
     "test-browsers": "yarn build && jest --testPathIgnorePatterns \"__tests__/browser-jsdom/.*\" \"__tests__/browser/.*slow.*\" \"__tests__/browser/examples/.*\" --coverage --coveragePathIgnorePatterns \"src/browser\" \"__tests__/utils\" -i",
-    "test-all": "jest --coverage"
+    "test-all": "jest --coverage",
+    "prettier": "prettier"
   },
   "author": "@zaripych",
   "license": "MIT",

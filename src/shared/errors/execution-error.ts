@@ -1,5 +1,5 @@
-import { QueryError } from './query-error';
+import { QueryError } from './query-error'
 
 export class ExecutionError extends QueryError {}
 
-ExecutionError.prototype.name = 'ExecutionError';
+ExecutionError.prototype.name = 'ExecutionError'

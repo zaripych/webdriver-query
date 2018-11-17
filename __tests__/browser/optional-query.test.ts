@@ -1,16 +1,16 @@
-import 'css.escape';
-import * as selenium from 'selenium-webdriver';
-import { describeBrowserTests } from '../utils/browser-tests-config';
-import { UnexpectedTypeError } from '../../src/shared/errors';
-import { Query } from '../../src/node/query';
+import 'css.escape'
+import * as selenium from 'selenium-webdriver'
+import { describeBrowserTests } from '../utils/browser-tests-config'
+import { UnexpectedTypeError } from '../../src/shared/errors'
+import { Query } from '../../src/node/query'
 
 describe('OptionalQuery', () => {
-  describeBrowserTests((testDataBuilder) => {
-    let query: Query;
+  describeBrowserTests(testDataBuilder => {
+    let query: Query
     beforeAll(async () => {
-      const result = await testDataBuilder();
-      query = result.query;
-    });
+      const result = await testDataBuilder()
+      query = result.query
+    })
 
     it('works when truthy for truthy', async () => {
       await expect(
@@ -18,8 +18,8 @@ describe('OptionalQuery', () => {
           .execute(`return true`)
           .truthy()
           .perform()
-      ).resolves.toBe(true);
-    });
+      ).resolves.toBe(true)
+    })
 
     it('works when asBoolean for a boolean', async () => {
       await expect(
@@ -27,8 +27,8 @@ describe('OptionalQuery', () => {
           .execute(`return true`)
           .asBoolean()
           .perform()
-      ).resolves.toBe(true);
-    });
+      ).resolves.toBe(true)
+    })
 
     it('works when asString for a string', async () => {
       await expect(
@@ -36,8 +36,8 @@ describe('OptionalQuery', () => {
           .execute(`return 'Some string'`)
           .asString()
           .perform()
-      ).resolves.toBe('Some string');
-    });
+      ).resolves.toBe('Some string')
+    })
 
     it('fails when asObject for a string', async () => {
       await expect(
@@ -45,8 +45,8 @@ describe('OptionalQuery', () => {
           .execute(`return 'Some string'`)
           .asObject()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
 
     it('fails when asElement for a string', async () => {
       await expect(
@@ -57,8 +57,8 @@ describe('OptionalQuery', () => {
           )
           .asObject()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
 
     it('works when asObject for an object', async () => {
       await expect(
@@ -69,8 +69,8 @@ describe('OptionalQuery', () => {
           )
           .asObject()
           .perform()
-      ).resolves.toMatchObject({ value: 'Some other string' });
-    });
+      ).resolves.toMatchObject({ value: 'Some other string' })
+    })
 
     it('fails when asString for an object', async () => {
       await expect(
@@ -81,8 +81,8 @@ describe('OptionalQuery', () => {
           )
           .asString()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
 
     it('fails when asElement for an object', async () => {
       await expect(
@@ -93,16 +93,16 @@ describe('OptionalQuery', () => {
           )
           .asElement()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
 
     it('works when asElement for an element', async () => {
       const result = await query
         .execute('return document.documentElement')
         .asElement()
-        .perform();
-      await expect(result).toBeInstanceOf(selenium.WebElement);
-    });
+        .perform()
+      await expect(result).toBeInstanceOf(selenium.WebElement)
+    })
 
     it('fails when asObject for an element', async () => {
       await expect(
@@ -113,8 +113,8 @@ describe('OptionalQuery', () => {
           )
           .asObject()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
 
     it('fails when asString for an element', async () => {
       await expect(
@@ -125,8 +125,8 @@ describe('OptionalQuery', () => {
           )
           .asString()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
 
     it('fails when asElement for undefined', async () => {
       await expect(
@@ -137,8 +137,8 @@ describe('OptionalQuery', () => {
           )
           .asElement()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
 
     it('fails when asObject for undefined', async () => {
       await expect(
@@ -149,8 +149,8 @@ describe('OptionalQuery', () => {
           )
           .asObject()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
 
     it('fails when asString for undefined', async () => {
       await expect(
@@ -161,7 +161,7 @@ describe('OptionalQuery', () => {
           )
           .asString()
           .perform()
-      ).rejects.toBeInstanceOf(UnexpectedTypeError);
-    });
-  });
-});
+      ).rejects.toBeInstanceOf(UnexpectedTypeError)
+    })
+  })
+})

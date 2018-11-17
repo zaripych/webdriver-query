@@ -1,5 +1,5 @@
-import { QueryError } from './query-error';
+import { QueryError } from './query-error'
 
 export class BootstrapError extends QueryError {}
 
-BootstrapError.prototype.name = 'BootstrapError';
+BootstrapError.prototype.name = 'BootstrapError'

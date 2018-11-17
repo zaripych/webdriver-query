@@ -1,5 +1,5 @@
-import { QueryError } from './query-error';
+import { QueryError } from './query-error'
 
 export class UnexpectedTypeError extends QueryError {}
 
-UnexpectedTypeError.prototype.name = 'UnexpectedTypeError';
+UnexpectedTypeError.prototype.name = 'UnexpectedTypeError'

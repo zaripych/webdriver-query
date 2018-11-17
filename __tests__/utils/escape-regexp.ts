@@ -1,6 +1,6 @@
 // tslint:disable-next-line:no-var-requires
-const escapeRegExpFunc = require('escape-string-regexp');
+const escapeRegExpFunc = require('escape-string-regexp')
 
 export const escapeRegExp = (value: string): string => {
-  return escapeRegExpFunc(value);
-};
+  return escapeRegExpFunc(value)
+}

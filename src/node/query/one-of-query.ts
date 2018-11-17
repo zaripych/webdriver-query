@@ -1,9 +1,9 @@
-import { ElementQuery } from './element-query';
-import { StringQuery } from './string-query';
-import { NumberQuery } from './number-query';
-import { NullableStringQuery } from './nullable-string-query';
-import { ObjectQuery } from './object-query';
-import { AnyQuery } from './any-query';
+import { ElementQuery } from './element-query'
+import { StringQuery } from './string-query'
+import { NumberQuery } from './number-query'
+import { NullableStringQuery } from './nullable-string-query'
+import { ObjectQuery } from './object-query'
+import { AnyQuery } from './any-query'
 
 export type OneOfQueries =
   | ElementQuery
@@ -11,4 +11,4 @@ export type OneOfQueries =
   | NumberQuery
   | NullableStringQuery
   | ObjectQuery
-  | AnyQuery;
+  | AnyQuery

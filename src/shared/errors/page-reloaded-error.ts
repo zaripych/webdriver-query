@@ -1,5 +1,5 @@
-import { QueryError } from './query-error';
+import { QueryError } from './query-error'
 
 export class PageReloadedError extends QueryError {}
 
-PageReloadedError.prototype.name = 'PageReloadedError';
+PageReloadedError.prototype.name = 'PageReloadedError'
