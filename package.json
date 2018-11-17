@@ -1,7 +1,7 @@
 {
   "name": "webdriver-query",
-  "version": "1.0.0",
-  "description": "Query multiple elements, forms, tables from Selenium WebDriver using a single batch query",
+  "version": "0.1.0",
+  "description": "Query whole pages, multiple objects, elements, forms, tables from Selenium WebDriver using a single query",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -23,6 +23,9 @@
   },
   "author": "@zaripych",
   "license": "MIT",
+  "repository": {
+    "url": "git@github.com:zaripych/webdriver-query.git"
+  },
   "dependencies": {},
   "peerDependencies": {
     "selenium-webdriver": "3.6.0"
