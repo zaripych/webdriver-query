@@ -20,6 +20,9 @@
     "test-browsers-all": "yarn build && jest --testPathIgnorePatterns \"__tests__/browser-jsdom/.*\" --coverage --coveragePathIgnorePatterns \"src/browser\" \"__tests__/utils\" -i",
     "test-browsers": "yarn build && jest --testPathIgnorePatterns \"__tests__/browser-jsdom/.*\" \"__tests__/browser/.*slow.*\" \"__tests__/browser/examples/.*\" --coverage --coveragePathIgnorePatterns \"src/browser\" \"__tests__/utils\" -i",
     "test-all": "jest --coverage",
+    "run-examples": "yarn run test-all -- -i --testPathPattern \"__tests__/browser/examples/.*\" --no-coverage --verbose",
+    "run-examples-query": "yarn run test-all -- -i --testPathPattern \"__tests__/browser/examples/.*\" --testNamePattern \"query api\" --no-coverage --verbose",
+    "run-examples-driver": "yarn run test-all -- -i --testPathPattern \"__tests__/browser/examples/.*\" --testNamePattern \"driver api\" --no-coverage --verbose",
     "prettier": "prettier"
   },
   "author": "@zaripych",
@@ -50,7 +53,6 @@
     "babel-loader": "8.0.2",
     "chromedriver": "2.41.0",
     "css.escape": "1.5.1",
-    "edgedriver": "4.17134.0",
     "escape-string-regexp": "1.0.5",
     "geckodriver": "1.12.2",
     "jest": "23.6.0",

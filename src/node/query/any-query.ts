@@ -1,16 +1,23 @@
-import { StringQuery, ElementQuery, ConditionQuery, PromiseLikeQuery } from '../query'
+import {
+  StringQuery,
+  ElementQuery,
+  ConditionQuery,
+  PromiseLikeQuery,
+  ObjectQuery,
+} from '../query'
 
 import { QueryBuilder, IAnyQuery, AnyResultType } from '../../shared/query'
 
-export class AnyQuery extends PromiseLikeQuery<AnyResultType> implements IAnyQuery {
+export class AnyQuery extends PromiseLikeQuery<AnyResultType>
+  implements IAnyQuery {
   public asString(): StringQuery {
     const query = this.appendCall('asString')
     return new StringQuery(this.build(query))
   }
 
-  public asObject(): StringQuery {
+  public asObject<T extends object = {}>(): ObjectQuery<T> {
     const query = this.appendCall('asObject')
-    return new StringQuery(this.build(query))
+    return new ObjectQuery(this.build(query))
   }
 
   public asElement(): ElementQuery {
@@ -28,7 +35,10 @@ export class AnyQuery extends PromiseLikeQuery<AnyResultType> implements IAnyQue
     return new ConditionQuery(this.build(query))
   }
 
-  private appendCall(method: keyof IAnyQuery, ...args: Array<{}>): QueryBuilder {
+  private appendCall(
+    method: keyof IAnyQuery,
+    ...args: Array<{}>
+  ): QueryBuilder {
     return this.query.appendCall(method, ...args)
   }
 }

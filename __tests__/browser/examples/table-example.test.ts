@@ -1,24 +1,47 @@
-import { describeBrowserTests } from '../../utils/browser-tests-config'
+import {
+  describeBrowserTests,
+  IBuildResult,
+} from '../../utils/browser-tests-config'
 import { Query } from '../../../src/node/query'
-import { ThenableWebDriver, By } from 'selenium-webdriver'
-import workaroundEPipeErrorsIfRequired from '../../utils/workaround-epipe-errors'
+import { WebDriver, By } from 'selenium-webdriver'
 
 describe('TableExample', () => {
   describeBrowserTests(testDataBuilder => {
     let query: Query
-    let driver: ThenableWebDriver
-    describe('given query api', () => {
-      beforeAll(async () => {
-        const result = await testDataBuilder({
-          testPageName: 'table-example.html',
-          shouldLoadAtStart: true,
-        })
-        query = result.query
-        driver = result.driver
-      })
+    let driver: WebDriver
+    let result: IBuildResult
 
+    beforeAll(async () => {
+      // tslint:disable-next-line:no-console
+      console.time('buildingDriver')
+
+      result = await testDataBuilder({
+        testPageName: 'table-example.html',
+        shouldLoadAtStart: true,
+      })
+      query = result.query
+      driver = result.driver
+
+      // tslint:disable-next-line:no-console
+      console.timeEnd('buildingDriver')
+    })
+
+    beforeEach(async () => {
+      // tslint:disable-next-line:no-console
+      console.time('pageLoad')
+
+      await driver.get(result.testPagePath)
+
+      // tslint:disable-next-line:no-console
+      console.timeEnd('pageLoad')
+    })
+
+    describe('given query api', () => {
       it('should load the table data', async () => {
-        const result = await query
+        // tslint:disable-next-line:no-console
+        console.time('query')
+
+        const queryResult = await query
           .findElements('.data-row')
           .map(r => r.findElements('td').map(col => col.getText()))
           .then(rows =>
@@ -37,35 +60,25 @@ describe('TableExample', () => {
             }))
           )
 
-        expect(result).toBeDefined()
+        expect(queryResult).toBeDefined()
+
+        // tslint:disable-next-line:no-console
+        console.timeEnd('query')
       })
     })
 
     describe('given driver api', () => {
-      beforeAll(async () => {
-        const result = await testDataBuilder({
-          testPageName: 'table-example.html',
-          shouldLoadAtStart: true,
-        })
-        query = result.query
-        driver = result.driver
-      })
-
-      // workaround doesn't allow multiple requests at the
-      // same time because of the known EPIPE issue
-      let workaround: ReturnType<typeof workaroundEPipeErrorsIfRequired>
-      beforeEach(() => {
-        workaround = workaroundEPipeErrorsIfRequired(driver)
-      })
-
-      afterEach(() => {
-        workaround.undo()
-      })
-
       it('should load the table data', async () => {
+        // tslint:disable-next-line:no-console
+        console.time('driver')
+
         const rows = await driver.findElements(By.css('.data-row'))
-        const rowCols = await Promise.all(rows.map(r => r.findElements(By.css('td'))))
-        const rowColTextPromise = rowCols.map(cols => cols.map(col => col.getText()))
+        const rowCols = await Promise.all(
+          rows.map(r => r.findElements(By.css('td')))
+        )
+        const rowColTextPromise = rowCols.map(cols =>
+          cols.map(col => col.getText())
+        )
         const rowColText = await rowColTextPromise.reduce((acc, item) => {
           return acc.then(accValue =>
             Promise.all(item).then(resolvedRow => {
@@ -74,7 +87,8 @@ describe('TableExample', () => {
             })
           )
         }, Promise.resolve<string[][]>([]))
-        const result = await rowColText.map(cols => ({
+
+        const driverResult = await rowColText.map(cols => ({
           property: cols[0],
           mercury: cols[1],
           venus: cols[2],
@@ -88,7 +102,10 @@ describe('TableExample', () => {
           pluto: cols[10],
         }))
 
-        expect(result).toBeDefined()
+        expect(driverResult).toBeDefined()
+
+        // tslint:disable-next-line:no-console
+        console.timeEnd('driver')
       })
     })
   })
