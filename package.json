@@ -32,6 +32,13 @@
   "repository": {
     "url": "git@github.com:zaripych/webdriver-query.git"
   },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {},
   "peerDependencies": {
     "selenium-webdriver": "3.6.0"
