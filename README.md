@@ -260,8 +260,13 @@ await ...q.getSelectedOptions()
 ## When this doesn't work
 
 - Your total tests execution time is negligable and you do not want to bring yet another dependency that needs to be maintained and might have bugs
-- Clicking, touching, keyboard API
-  - We can use Selenium WebDriver if user-like interactions with the browser are required
-  - We could use _imitations_ which use jQuery to simulate DOM events
-- Classic non-SPA Web-Server apps will have to embed JavaScript bundle to the rendered web pages to reduce overhead of installing it for every single query
-- Branching and conditional logic might be an issue; however, because querying is fast we can load all options from browser and then execute conditional logic later when analyzing data
+
+- Clicking, touching, keyboard API are important to be exactly as browser would make them;
+
+  > _A note that the library doesn't limit your usage of the Web Driver API, so we can still fallback to that when required_
+
+- Branching and conditional logic might be an issue;
+
+  > _Because is very fast, however, we can load all conditional data from the browser and then execute logic later_
+
+- Classic non-SPA Web-Server apps will have to embed JavaScript bundle to the rendered web pages to reduce overhead of installing it for every single page-reload
