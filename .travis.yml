@@ -1,0 +1,26 @@
+language: node_js
+cache:
+  yarn: true
+  directories:
+    - node_modules
+node_js:
+  - '6.9'
+  - 'lts'
+  - 'latest'
+jobs:
+  include:
+    - stage: Unit Test
+      script:
+        - yarn lint
+        - yarn test
+        - yarn build
+    - stage: Publish
+      node_js: lts/*
+      script: false
+      deploy:
+        provider: script
+        script:
+          - yarn run semantic-release -- --dry-run
+        skip_cleanup: true
+        on:
+          branch: master

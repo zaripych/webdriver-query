@@ -9,12 +9,12 @@ The library allows you to query whole pages, multiple objects or elements, forms
 
 ## Features
 
-- API is similar to Selenium WebDriver sometimes allows seamless replacement for simple queries
-- Fluent interface with hidden promise chaining allows creation of complex queries using single `await`
+- API is similar to Selenium WebDriver - allows seamless replacement for simple queries
+- Fluent interface - create complex queries using single `await`
 - Load the whole page using single query
 - Compose bigger queries using reusable functions
-- Create query once, execute multiple times
-- Smooth the differences between different driver implementations
+- Create a query once, execute multiple times
+- Hides the differences between different driver implementations
 
 ## Status - Beta
 
