@@ -6,6 +6,13 @@ jobs:
   include:
     - stage: test
       if: branch = master
+      node_js: '8.3'
+      script:
+        - yarn lint
+        - yarn test
+        - yarn build
+    - stage: test
+      if: branch = master
       node_js: 'node'
       script:
         - yarn lint
@@ -17,11 +24,19 @@ jobs:
         - yarn lint
         - yarn test
         - yarn build
+    - stage: Integration Test
+      if: branch = master
+      node_js: 'lts/*'
+      env:
+        - TEST_BROWSERS_PATTERN="chrome"
+      script:
+        - yarn test-browsers
+        - yarn test
+        - yarn build
     - stage: Publish
       if: branch = master
       node_js: lts/*
       script: false
-      install: skip
       deploy:
         provider: script
         script:
