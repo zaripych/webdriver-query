@@ -24,15 +24,6 @@ jobs:
         - yarn lint
         - yarn test
         - yarn build
-    - stage: Integration Test
-      if: branch = master
-      node_js: 'lts/*'
-      env:
-        - TEST_BROWSERS_PATTERN="chrome"
-      script:
-        - yarn test-browsers
-        - yarn test
-        - yarn build
     - stage: Publish
       if: branch = master
       node_js: lts/*
