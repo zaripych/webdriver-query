@@ -11,9 +11,9 @@ The library allows you to query whole pages, multiple objects or elements, forms
 
 **Solution**: batch multiple operations together into a serializable JavaScript, evaluate in the browser using 'Execute Async Script' command and get all results using single HTTP response
 
-**Value**: Examples from `__tests__/examples` folder demonstrate longer execution time for a Selenium WebDriver based test and shorter execution time fo tests that use `webdriver-query`.
+**Value**: Examples from `__tests__/examples` folder demonstrate longer execution time for a Selenium WebDriver based test and shorter execution time for tests that use `webdriver-query`.
 
-> Very roughly, as of `18/11/2018`, on my local machine, the `webdriver-query` runs both of the tests in less than `100ms` on Headless Chrome, but a similar test that uses Selenium WebDriver API run up to `2sec`. That means we should expect to run more tests for the same amount of test-cloud money.
+> Very roughly, as of `18/11/2018`, on my local machine, the `webdriver-query` runs both of the tests in less than `100ms` on Headless Chrome, but a similar test that uses Selenium WebDriver API ran up to `2sec`. That means we should expect to run more tests for the same amount of test-cloud money.
 
 ```bash
 yarn run run-examples-query
@@ -33,7 +33,7 @@ yarn run run-examples-query
 
 The difference between tests is in number of requests made to WebDriver server. The higher total time is due to Headless Chrome startup and initial page load, while the actual test code runs faster than 2.5 sec.
 
-**Surprise**: Edge is the fastest browser to run tests, however, due to low popularity
+**Surprise**: Edge is the fastest browser to run tests
 
 ## Features
 
@@ -42,6 +42,7 @@ The difference between tests is in number of requests made to WebDriver server. 
 - Load the whole page using single query
 - Compose bigger queries using reusable functions
 - Create query once, execute multiple times
+- Smooth the differences between different driver implementations
 
 ## Status - Beta
 

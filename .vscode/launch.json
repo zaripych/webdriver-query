@@ -23,7 +23,7 @@
       ],
       "autoAttachChildProcesses": true,
       "env": {
-        "TEST_BROWSERS_PATTERN": "chrome"
+        "TEST_BROWSERS_PATTERN": "edge"
       }
     }
   ]

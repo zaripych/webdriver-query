@@ -262,8 +262,17 @@ describe('FormExample', () => {
         const errorMessage = await q
           .findElement(By.css(selector))
           .findElement(By.css('.invalid-feedback'))
-          .getText()
-          .catch(() => Promise.resolve(''))
+          .then(element =>
+            element.isDisplayed().then(isDisplayed => ({
+              isDisplayed,
+              element,
+            }))
+          )
+          .then(
+            ({ isDisplayed, element }) =>
+              !isDisplayed ? Promise.resolve('') : element.getText(),
+            () => Promise.resolve('')
+          )
 
         return {
           value,
@@ -283,8 +292,17 @@ describe('FormExample', () => {
         const errorMessage = await q
           .findElement(By.css(selector))
           .findElement(By.css('.invalid-feedback'))
-          .getText()
-          .catch(() => Promise.resolve(''))
+          .then(element =>
+            element.isDisplayed().then(isDisplayed => ({
+              isDisplayed,
+              element,
+            }))
+          )
+          .then(
+            ({ isDisplayed, element }) =>
+              !isDisplayed ? Promise.resolve('') : element.getText(),
+            () => Promise.resolve('')
+          )
 
         return {
           value,
