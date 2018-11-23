@@ -5,7 +5,28 @@
 
 ## What this does and why you should use it?
 
-The library allows you to query whole pages, multiple objects or elements, forms, tables from Selenium WebDriver supported browser using a single query.
+The library allows you to query whole pages, multiple objects or elements, forms, tables from Selenium WebDriver supported browser using a single query. If you have a test that has to load a lot of data from the browser then you can use this library to improve its performance.
+
+## Features
+
+- API is similar to Selenium WebDriver sometimes allows seamless replacement for simple queries
+- Fluent interface with hidden promise chaining allows creation of complex queries using single `await`
+- Load the whole page using single query
+- Compose bigger queries using reusable functions
+- Create query once, execute multiple times
+- Smooth the differences between different driver implementations
+
+## Status - Beta
+
+The core features are complete. The test coverage and quality of the tests are reasonable.
+
+Future plans:
+
+- Publish beta package
+- Test in a real test cloud
+- Find open source project, convert to `webdriver-query` and prove value
+
+## How it works
 
 **Issue**: back and forth HTTP requests using W3C WebDriver protocol are costly, the API itself doesn't allow batching multiple commands together https://w3c.github.io/webdriver/#commands - tests that deal with a lot of data on the page become very slow
 
@@ -34,25 +55,6 @@ yarn run run-examples-query
 The difference between tests is in number of requests made to WebDriver server. The higher total time is due to Headless Chrome startup and initial page load, while the actual test code runs faster than 2.5 sec.
 
 **Surprise**: Edge is the fastest browser to run tests
-
-## Features
-
-- API is similar to Selenium WebDriver sometimes allows seamless replacement for simple queries
-- Fluent interface with hidden promise chaining allows creation of complex queries using single `await`
-- Load the whole page using single query
-- Compose bigger queries using reusable functions
-- Create query once, execute multiple times
-- Smooth the differences between different driver implementations
-
-## Status - Beta
-
-The core features are complete. The test coverage and quality of the tests are reasonable.
-
-Future plans:
-
-- Publish beta package
-- Test in a real test cloud
-- Find open source project, convert to `webdriver-query` and prove value
 
 ## Examples
 
