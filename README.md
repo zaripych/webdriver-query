@@ -1,6 +1,8 @@
 <h1 align="center">
   <p align="center">webdriver-query</p>
-  <p align="center" style="font-size: 0.5em"></p>
+  <p align="center" style="font-size: 0.5em">
+  <a href="https://travis-ci.org/zaripych/webdriver-query"><img src="https://travis-ci.org/zaripych/webdriver-query.svg?branch=master" alt="Travis Build Status"></a>
+  </p>
 </h1>
 
 ## What this does and why you should use it?

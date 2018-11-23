@@ -6,6 +6,13 @@ jobs:
   include:
     - stage: test
       if: branch = master
+      node_js: '8.3'
+      script:
+        - yarn lint
+        - yarn test
+        - yarn build
+    - stage: test
+      if: branch = master
       node_js: 'node'
       script:
         - yarn lint
@@ -21,7 +28,6 @@ jobs:
       if: branch = master
       node_js: lts/*
       script: false
-      install: skip
       deploy:
         provider: script
         script:
