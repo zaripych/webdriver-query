@@ -14,7 +14,9 @@ describe('MultipleElementsQuery', () => {
     describe('given query targeting multiple elements', () => {
       let query: ReturnType<Query['findElements']>
       beforeEach(() => {
-        query = baseQuery.findElements(selenium.By.css('#multiple-elements .row'))
+        query = baseQuery.findElements(
+          selenium.By.css('#multiple-elements .row')
+        )
       })
 
       it('performing count should work', async () => {
@@ -31,15 +33,21 @@ describe('MultipleElementsQuery', () => {
       })
 
       it('performing `at` with invalid index should throw', async () => {
-        await expect(query.at(-1).perform()).rejects.toBeInstanceOf(ArgumentError)
+        await expect(query.at(-1).perform()).rejects.toBeInstanceOf(
+          ArgumentError
+        )
       })
 
       it('performing `at` with invalid index should throw', async () => {
-        await expect(query.at(9).perform()).rejects.toBeInstanceOf(ArgumentError)
+        await expect(query.at(9).perform()).rejects.toBeInstanceOf(
+          ArgumentError
+        )
       })
 
       it('performing `at` with NaN should throw', async () => {
-        await expect(query.at(Number.NaN).perform()).rejects.toBeInstanceOf(ArgumentError)
+        await expect(query.at(Number.NaN).perform()).rejects.toBeInstanceOf(
+          ArgumentError
+        )
       })
 
       it('performing `filter` with results should work', async () => {

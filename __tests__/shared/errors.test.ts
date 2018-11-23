@@ -19,7 +19,9 @@ describe('Errors', () => {
       it('should have correct message when query is passed', () => {
         const instance = new ErrorType(
           'Message',
-          new QueryBuilder().prependConstructor('constructor').appendCall('aCall')
+          new QueryBuilder()
+            .prependConstructor('constructor')
+            .appendCall('aCall')
         )
         expect(instance.message).toContain('aCall()')
       })
@@ -28,7 +30,9 @@ describe('Errors', () => {
         const instance = new ErrorType(
           'Message',
           new Error('Another'),
-          new QueryBuilder().prependConstructor('constructor').appendCall('aCall2')
+          new QueryBuilder()
+            .prependConstructor('constructor')
+            .appendCall('aCall2')
         )
         expect(instance.message).toContain('aCall2()')
       })
@@ -263,8 +267,12 @@ describe('Errors', () => {
 
       it('captures innerError', () => {
         expect(instance.innerError).toBeDefined()
-        expect(instance.innerError && instance.innerError.name).toBe(innerErrorType.name)
-        expect(instance.innerError && instance.innerError.message).toBe(innerMessage)
+        expect(instance.innerError && instance.innerError.name).toBe(
+          innerErrorType.name
+        )
+        expect(instance.innerError && instance.innerError.message).toBe(
+          innerMessage
+        )
         expect(instance.innerError && instance.innerError.stack).toBeDefined()
       })
 
@@ -323,8 +331,12 @@ describe('Errors', () => {
 
       it('captures innerError', () => {
         expect(instance.innerError).toBeDefined()
-        expect(instance.innerError && instance.innerError.name).toBe(outerErrorType.name)
-        expect(instance.innerError && instance.innerError.message).toContain('Error message')
+        expect(instance.innerError && instance.innerError.name).toBe(
+          outerErrorType.name
+        )
+        expect(instance.innerError && instance.innerError.message).toContain(
+          'Error message'
+        )
         expect(instance.innerError && instance.innerError.stack).toBeDefined()
       })
 
@@ -383,8 +395,12 @@ describe('Errors', () => {
 
       it('captures innerError', () => {
         expect(instance.innerError).toBeDefined()
-        expect(instance.innerError && instance.innerError.name).toBe(outerErrorType.name)
-        expect(instance.innerError && instance.innerError.message).toContain('Error message')
+        expect(instance.innerError && instance.innerError.name).toBe(
+          outerErrorType.name
+        )
+        expect(instance.innerError && instance.innerError.message).toContain(
+          'Error message'
+        )
         expect(instance.innerError && instance.innerError.stack).toBeDefined()
       })
 

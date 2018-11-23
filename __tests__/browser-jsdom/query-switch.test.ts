@@ -1,5 +1,15 @@
-import { Query, StringQuery, ElementQuery, NumberQuery, AnyQuery } from '../../src/browser/query'
-import { OutOfOptionsError, NoSuchElementError, ArgumentError } from '../../src/shared/errors'
+import {
+  Query,
+  StringQuery,
+  ElementQuery,
+  NumberQuery,
+  AnyQuery,
+} from '../../src/browser/query'
+import {
+  OutOfOptionsError,
+  NoSuchElementError,
+  ArgumentError,
+} from '../../src/shared/errors'
 
 describe('Query', () => {
   const query = new Query()
@@ -106,7 +116,9 @@ describe('Query', () => {
       const defaultOption = (q: Query) => q.findElement('#option-1').getText()
 
       it('should reject', async () => {
-        const result = await query.switch(testedQuery, options, defaultOption).perform()
+        const result = await query
+          .switch(testedQuery, options, defaultOption)
+          .perform()
 
         expect(result).toBe('Option 1')
       })
@@ -119,7 +131,9 @@ describe('Query', () => {
       const defaultOption = (q: Query) => null
 
       it('should reject', async () => {
-        expect(() => query.switch(testedQuery, options, defaultOption)).toThrow(ArgumentError)
+        expect(() => query.switch(testedQuery, options, defaultOption)).toThrow(
+          ArgumentError
+        )
       })
     })
 
@@ -130,7 +144,9 @@ describe('Query', () => {
       const defaultOption = (q: Query) => q.findElement('#option-1').getText()
 
       it('should resolve', async () => {
-        const result = await query.switch(testedQuery, options, defaultOption).perform()
+        const result = await query
+          .switch(testedQuery, options, defaultOption)
+          .perform()
 
         expect(result).toBe('Option 1')
       })
@@ -143,7 +159,9 @@ describe('Query', () => {
       const defaultOption = (q: Query) => q.findElement('#option-1').exists()
 
       it('should resolve', async () => {
-        const result = await query.switch(testedQuery, options, defaultOption).perform()
+        const result = await query
+          .switch(testedQuery, options, defaultOption)
+          .perform()
 
         expect(result).toBe(true)
       })
@@ -299,7 +317,9 @@ describe('Query', () => {
 
       it('should throw', async () => {
         // @ts-ignore
-        expect(() => query.switch(testedQuery, arg1, arg2)).toThrow(ArgumentError)
+        expect(() => query.switch(testedQuery, arg1, arg2)).toThrow(
+          ArgumentError
+        )
       })
     })
 
@@ -309,7 +329,9 @@ describe('Query', () => {
 
       it('should throw', async () => {
         // @ts-ignore
-        expect(() => query.switch(testedQuery, arg1, arg2)).toThrow(ArgumentError)
+        expect(() => query.switch(testedQuery, arg1, arg2)).toThrow(
+          ArgumentError
+        )
       })
     })
 
@@ -319,7 +341,9 @@ describe('Query', () => {
 
       it('should throw', async () => {
         // @ts-ignore
-        expect(() => query.switch(testedQuery, arg1, arg2)).toThrow(ArgumentError)
+        expect(() => query.switch(testedQuery, arg1, arg2)).toThrow(
+          ArgumentError
+        )
       })
     })
   })

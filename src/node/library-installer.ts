@@ -6,7 +6,11 @@ import * as path from 'path'
 import * as util from 'util'
 
 const browserBundleFileName = 'browser.bundle.js'
-export const browserBundlePath = path.join(__dirname, '../../dist/', browserBundleFileName)
+export const browserBundlePath = path.join(
+  __dirname,
+  '../../dist/',
+  browserBundleFileName
+)
 
 const browserBundleMinFileName = 'browser.bundle.min.js'
 export const browserBundleMinFilePath = path.join(
@@ -43,15 +47,23 @@ export class LibraryInstaller {
     })
   }
 
-  constructor(driver: selenium.WebDriver | IDriver, options?: Partial<ILibraryInstallerOptions>) {
+  constructor(
+    driver: selenium.WebDriver | IDriver,
+    options?: Partial<ILibraryInstallerOptions>
+  ) {
     const props = {
-      browserBundlePath: (options && options.browserBundlePath) || browserBundlePath,
+      browserBundlePath:
+        (options && options.browserBundlePath) || browserBundlePath,
       installMethod: (options && options.installMethod) || 'scriptTag',
     }
 
-    if (props.installMethod !== 'scriptTag' && props.installMethod !== 'executeScript') {
+    if (
+      props.installMethod !== 'scriptTag' &&
+      props.installMethod !== 'executeScript'
+    ) {
       throw new Errors.ArgumentError(
-        'The installMethod is not one of the possible values, currently: ' + props.installMethod
+        'The installMethod is not one of the possible values, currently: ' +
+          props.installMethod
       )
     }
 
@@ -87,7 +99,9 @@ export class LibraryInstaller {
                   `Cannot install browser JavaScript bundle from scripts at '${bundlePath}'. ` +
                   'There seems to be a JavaScript error when ' +
                   'executing the combined script in the browser. '
-                return Promise.reject(new Errors.BootstrapError(errMessage, err))
+                return Promise.reject(
+                  new Errors.BootstrapError(errMessage, err)
+                )
               })
               .then(() => {
                 return
@@ -106,7 +120,9 @@ export class LibraryInstaller {
                   `Cannot install browser JavaScript bundle from scripts at '${bundlePath}'. ` +
                   'There seems to be a JavaScript error when ' +
                   'executing the combined script in the browser. '
-                return Promise.reject(new Errors.BootstrapError(errMessage, err))
+                return Promise.reject(
+                  new Errors.BootstrapError(errMessage, err)
+                )
               })
               .then(() => {
                 return
@@ -118,6 +134,8 @@ export class LibraryInstaller {
 
   public isInstalled(): Promise<boolean> {
     const driver = this.scriptDriver
-    return driver.executeScript(`return ${QueryBuilder.isInstalledExpression};`) as Promise<boolean>
+    return driver.executeScript(
+      `return ${QueryBuilder.isInstalledExpression};`
+    ) as Promise<boolean>
   }
 }

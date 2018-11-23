@@ -79,8 +79,12 @@ describe('Query', () => {
 
         await expect(queryResult).rejects.toBeInstanceOf(NoSuchElementError)
 
-        const driverResult = driver.findElement(selenium.By.css(invalidSelector))
-        await expect(driverResult).rejects.toBeInstanceOf(selenium.error.NoSuchElementError)
+        const driverResult = driver.findElement(
+          selenium.By.css(invalidSelector)
+        )
+        await expect(driverResult).rejects.toBeInstanceOf(
+          selenium.error.NoSuchElementError
+        )
       })
 
       it('returns first when multiple elements match, similar to WebDriver', () => {
@@ -181,16 +185,18 @@ describe('Query', () => {
           .resolves.toBeInstanceOf(Array)
           .then(() => {
             return expect(
-              driver.findElements(selenium.By.css(outerSelector)).then(elements => {
-                expect(elements).toBeInstanceOf(Array)
-                expect(elements.length).toBe(2)
-                if (elements && elements instanceof Array) {
-                  elements.map(element => {
-                    expect(element).toBeInstanceOf(selenium.WebElement)
-                  })
-                }
-                return Promise.resolve(elements)
-              })
+              driver
+                .findElements(selenium.By.css(outerSelector))
+                .then(elements => {
+                  expect(elements).toBeInstanceOf(Array)
+                  expect(elements.length).toBe(2)
+                  if (elements && elements instanceof Array) {
+                    elements.map(element => {
+                      expect(element).toBeInstanceOf(selenium.WebElement)
+                    })
+                  }
+                  return Promise.resolve(elements)
+                })
             ).resolves.toBeInstanceOf(Array)
           })
       })
@@ -215,16 +221,18 @@ describe('Query', () => {
           .resolves.toBeInstanceOf(Array)
           .then(() => {
             expect(
-              driver.findElements(selenium.By.css(outerSelector)).then(elements => {
-                expect(elements).toBeInstanceOf(Array)
-                expect(elements.length).toBe(1)
-                if (elements && elements instanceof Array) {
-                  elements.map(element => {
-                    expect(element).toBeInstanceOf(selenium.WebElement)
-                  })
-                }
-                return Promise.resolve(elements)
-              })
+              driver
+                .findElements(selenium.By.css(outerSelector))
+                .then(elements => {
+                  expect(elements).toBeInstanceOf(Array)
+                  expect(elements.length).toBe(1)
+                  if (elements && elements instanceof Array) {
+                    elements.map(element => {
+                      expect(element).toBeInstanceOf(selenium.WebElement)
+                    })
+                  }
+                  return Promise.resolve(elements)
+                })
             ).resolves.toBeInstanceOf(Array)
           })
       })
@@ -342,7 +350,9 @@ describe('Query', () => {
           .resolves.toBe(expectedValue)
           .then(() => {
             return expect(
-              driver.findElement(selenium.By.css(selector)).getAttribute(anotherAttributeName)
+              driver
+                .findElement(selenium.By.css(selector))
+                .getAttribute(anotherAttributeName)
             ).resolves.toBe(expectedValue)
           })
       })
@@ -365,7 +375,11 @@ describe('Query', () => {
                 .getAttribute(invalidAttributeName)
                 .catch(err => {
                   // NOTE: Edge workaround
-                  if (err.message.indexOf('HTTP Error 400. The request URL is invalid.') >= 0) {
+                  if (
+                    err.message.indexOf(
+                      'HTTP Error 400. The request URL is invalid.'
+                    ) >= 0
+                  ) {
                     return null
                   }
                   return Promise.reject(err)
@@ -440,9 +454,9 @@ describe('Query', () => {
         )
           .resolves.toBe(expectedValue)
           .then(() => {
-            return expect(driver.findElement(selenium.By.css(selector)).getText()).resolves.toBe(
-              expectedValue
-            )
+            return expect(
+              driver.findElement(selenium.By.css(selector)).getText()
+            ).resolves.toBe(expectedValue)
           })
       })
 
@@ -457,9 +471,9 @@ describe('Query', () => {
         )
           .resolves.toBe(expectedValue)
           .then(() => {
-            return expect(driver.findElement(selenium.By.css(selector)).getText()).resolves.toBe(
-              expectedValue
-            )
+            return expect(
+              driver.findElement(selenium.By.css(selector)).getText()
+            ).resolves.toBe(expectedValue)
           })
       })
 
@@ -487,7 +501,9 @@ br`,
           .getText()
           .perform()
         expect(expectedValues).toContain(result)
-        const driverResult = await driver.findElement(selenium.By.css(selector)).getText()
+        const driverResult = await driver
+          .findElement(selenium.By.css(selector))
+          .getText()
         expect(expectedValues).toContain(driverResult)
       })
     })
@@ -540,7 +556,9 @@ br`,
       }
 
       type Props = keyof typeof selectorsWithDescription
-      const selectors: Props[] = Object.getOwnPropertyNames(selectorsWithDescription) as Props[]
+      const selectors: Props[] = Object.getOwnPropertyNames(
+        selectorsWithDescription
+      ) as Props[]
 
       for (const selector of selectors) {
         const description = selectorsWithDescription[selector]
@@ -577,7 +595,10 @@ br`,
             // @ts-ignore Only in Selenium Web Driver 4.0
             const driverResult = await element.getRect()
 
-            if (name.indexOf('chrome') !== -1 && description.indexOf('none') !== -1) {
+            if (
+              name.indexOf('chrome') !== -1 &&
+              description.indexOf('none') !== -1
+            ) {
               // NOTE: Chrome behavior for none elements doesn't quite match
               return
             }
@@ -585,7 +606,9 @@ br`,
             const xdiff = Math.abs(queryResult.x - driverResult.x)
             const ydiff = Math.abs(queryResult.y - driverResult.y)
             const widthDiff = Math.abs(queryResult.width - driverResult.width)
-            const heightDiff = Math.abs(queryResult.height - driverResult.height)
+            const heightDiff = Math.abs(
+              queryResult.height - driverResult.height
+            )
 
             expect(xdiff).toBeLessThan(1)
             expect(ydiff).toBeLessThan(1)
@@ -608,13 +631,18 @@ br`,
           if ('getSize' in element) {
             const driverResult = await element.getSize()
 
-            if (name.indexOf('chrome') !== -1 && description.indexOf('none') !== -1) {
+            if (
+              name.indexOf('chrome') !== -1 &&
+              description.indexOf('none') !== -1
+            ) {
               // NOTE: Chrome behavior for none elements doesn't quite match
               return
             }
 
             const widthDiff = Math.abs(queryResult.width - driverResult.width)
-            const heightDiff = Math.abs(queryResult.height - driverResult.height)
+            const heightDiff = Math.abs(
+              queryResult.height - driverResult.height
+            )
 
             expect(widthDiff).toBeLessThan(1)
             expect(heightDiff).toBeLessThan(1)
@@ -655,13 +683,18 @@ br`,
             if ('getSize' in element) {
               const driverResult = await element.getSize()
 
-              if (name.indexOf('chrome') !== -1 && description.indexOf('none') !== -1) {
+              if (
+                name.indexOf('chrome') !== -1 &&
+                description.indexOf('none') !== -1
+              ) {
                 // NOTE: Chrome behavior for none elements doesn't quite match
                 return
               }
 
               const widthDiff = Math.abs(queryResult.width - driverResult.width)
-              const heightDiff = Math.abs(queryResult.height - driverResult.height)
+              const heightDiff = Math.abs(
+                queryResult.height - driverResult.height
+              )
 
               expect(widthDiff).toBeLessThan(1)
               expect(heightDiff).toBeLessThan(1)
@@ -696,7 +729,9 @@ br`,
       }
 
       type Props = keyof typeof selectorsWithDescription
-      const selectors: Props[] = Object.getOwnPropertyNames(selectorsWithDescription) as Props[]
+      const selectors: Props[] = Object.getOwnPropertyNames(
+        selectorsWithDescription
+      ) as Props[]
 
       for (const selector of selectors) {
         const scenario = selectorsWithDescription[selector]
@@ -718,11 +753,15 @@ br`,
 
           expect(isDisplayedDriver).toBe(expectedIsDisplayed)
 
-          const textQuery = await query.findElement(selenium.By.css(selector)).getText()
+          const textQuery = await query
+            .findElement(selenium.By.css(selector))
+            .getText()
 
           expect(textQuery).toBe(expectedText)
 
-          const textDriver = await driver.findElement(selenium.By.css(selector)).getText()
+          const textDriver = await driver
+            .findElement(selenium.By.css(selector))
+            .getText()
 
           expect(textDriver).toBe(expectedText)
         })
@@ -741,9 +780,9 @@ br`,
         )
           .resolves.toBe(expectedValue)
           .then(() => {
-            return expect(driver.findElement(selenium.By.css(selector)).getTagName()).resolves.toBe(
-              expectedValue
-            )
+            return expect(
+              driver.findElement(selenium.By.css(selector)).getTagName()
+            ).resolves.toBe(expectedValue)
           })
       })
 
@@ -758,9 +797,9 @@ br`,
         )
           .resolves.toBe(expectedValue)
           .then(() => {
-            return expect(driver.findElement(selenium.By.css(selector)).getTagName()).resolves.toBe(
-              expectedValue
-            )
+            return expect(
+              driver.findElement(selenium.By.css(selector)).getTagName()
+            ).resolves.toBe(expectedValue)
           })
       })
 
@@ -775,9 +814,9 @@ br`,
         )
           .resolves.toBe(expectedValue)
           .then(() => {
-            return expect(driver.findElement(selenium.By.css(selector)).getTagName()).resolves.toBe(
-              expectedValue
-            )
+            return expect(
+              driver.findElement(selenium.By.css(selector)).getTagName()
+            ).resolves.toBe(expectedValue)
           })
       })
     })
@@ -803,7 +842,9 @@ br`,
       }
 
       type Props = keyof typeof targetWithDescription
-      const props: Props[] = Object.getOwnPropertyNames(targetWithDescription) as Props[]
+      const props: Props[] = Object.getOwnPropertyNames(
+        targetWithDescription
+      ) as Props[]
 
       for (const prop of props) {
         const selector = prop
@@ -844,7 +885,9 @@ br`,
       }
 
       type Props = keyof typeof targetWithDescription
-      const props: Props[] = Object.getOwnPropertyNames(targetWithDescription) as Props[]
+      const props: Props[] = Object.getOwnPropertyNames(
+        targetWithDescription
+      ) as Props[]
 
       for (const prop of props) {
         const selector = prop
@@ -951,7 +994,9 @@ br`,
         const element = await driver.findElement(selenium.By.css('#form-input'))
         await element.click()
 
-        const driverResult = await driver.findElement(selenium.By.css(sub)).getText()
+        const driverResult = await driver
+          .findElement(selenium.By.css(sub))
+          .getText()
 
         expect(driverResult).toBe(expectedValue)
       })
@@ -976,7 +1021,9 @@ br`,
                 .findElement(selenium.By.css(selector))
                 .clear()
                 .then(() => {
-                  return driver.findElement(selenium.By.css(selector)).getAttribute('value')
+                  return driver
+                    .findElement(selenium.By.css(selector))
+                    .getAttribute('value')
                 })
             ).resolves.toBe(expectedValue)
           })
@@ -1002,10 +1049,14 @@ br`,
               driver
                 .findElement(selenium.By.css(selector))
                 .then(el => {
-                  return el.click().then(() => el.sendKeys(selenium.Key.END, text))
+                  return el
+                    .click()
+                    .then(() => el.sendKeys(selenium.Key.END, text))
                 })
                 .then(() => {
-                  return driver.findElement(selenium.By.css(selector)).getAttribute('value')
+                  return driver
+                    .findElement(selenium.By.css(selector))
+                    .getAttribute('value')
                 })
             ).resolves.toBe(expectedValue)
           })
@@ -1032,10 +1083,14 @@ br`,
                 .findElement(selenium.By.css(selector))
                 .clear()
                 .then(() => {
-                  return driver.findElement(selenium.By.css(selector)).sendKeys(text)
+                  return driver
+                    .findElement(selenium.By.css(selector))
+                    .sendKeys(text)
                 })
                 .then(() => {
-                  return driver.findElement(selenium.By.css(selector)).getAttribute('value')
+                  return driver
+                    .findElement(selenium.By.css(selector))
+                    .getAttribute('value')
                 })
             ).resolves.toBe(expectedValue)
           })
@@ -1273,7 +1328,9 @@ br`,
           const script = `return arguments[0];`
 
           it('should work', async () => {
-            const queryResult = await elementQuery.execute(script, 'Value').perform()
+            const queryResult = await elementQuery
+              .execute(script, 'Value')
+              .perform()
             expect(queryResult).toBeInstanceOf(selenium.WebElement)
           })
         })
@@ -1282,7 +1339,9 @@ br`,
           const script = `return arguments[1] + arguments[2];`
 
           it('should work', async () => {
-            const queryResult = await elementQuery.execute(script, 40, 2).perform()
+            const queryResult = await elementQuery
+              .execute(script, 40, 2)
+              .perform()
             expect(queryResult).toBe(42)
           })
         })

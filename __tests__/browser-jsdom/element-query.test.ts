@@ -42,22 +42,26 @@ describe('Query', () => {
 
   it('when findElement performed with invalid query parameters it rejects', () => {
     const invalidSelector = ')(&*^&*^#$!'
-    return expect(query.findElement(invalidSelector).perform()).rejects.toBeInstanceOf(
-      ArgumentError
-    )
+    return expect(
+      query.findElement(invalidSelector).perform()
+    ).rejects.toBeInstanceOf(ArgumentError)
   })
 
   it('findElement works with a valid selector', () => {
     document.body.innerHTML = `<div id="valid"></div>`
     const outerSelector = '#valid'
-    return expect(query.findElement(outerSelector).perform()).resolves.toBeInstanceOf(HTMLElement)
+    return expect(
+      query.findElement(outerSelector).perform()
+    ).resolves.toBeInstanceOf(HTMLElement)
   })
 
   it('findElement fails when no elements selector', () => {
     document.body.innerHTML = `<div id="valid"></div>`
     const invalidSelector = '#invalid'
     const regexp = new RegExp(
-      '.*' + escapeRegExp(`Selector '${invalidSelector}' returned no elements`) + '.*'
+      '.*' +
+        escapeRegExp(`Selector '${invalidSelector}' returned no elements`) +
+        '.*'
     )
     return expect(
       query
@@ -73,7 +77,9 @@ describe('Query', () => {
   it('findElement returns first when multiple elements match', () => {
     document.body.innerHTML = `<div class="target"></div><div class="target"></div>`
     const outerSelector = '.target'
-    return expect(query.findElement(outerSelector).perform()).resolves.toBeInstanceOf(HTMLElement)
+    return expect(
+      query.findElement(outerSelector).perform()
+    ).resolves.toBeInstanceOf(HTMLElement)
   })
 
   it('findElements works with a valid selector', () => {

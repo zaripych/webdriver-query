@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "babel": "babel",
     "type-check": "tsc",
-    "build-node": "babel ./src --out-dir ./dist --extensions '.ts,.tsx' -s --ignore './src/browser/**'",
+    "build-node": "babel ./src --out-dir ./dist --extensions \".ts,.tsx\" -s --ignore \"./src/browser/**\"",
     "build-node-typings": "tsc --project ./tsconfig.node.json",
     "pack": "webpack",
     "prebuild": "yarn run lint && yarn run type-check && rimraf ./dist && yarn run build-node && yarn run build-node-typings",

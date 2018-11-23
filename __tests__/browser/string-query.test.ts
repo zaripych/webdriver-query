@@ -59,12 +59,16 @@ describe('StringQuery', () => {
 
       describe('matches', () => {
         it('should resolve to true when regex is valid and matches', async () => {
-          const result = await query.matches(/(\w+\s)+div\s(\w+\s)*(\w+)/).perform()
+          const result = await query
+            .matches(/(\w+\s)+div\s(\w+\s)*(\w+)/)
+            .perform()
           expect(result).toBe(true)
         })
 
         it("should resolve to false when regex is valid and doesn't match", async () => {
-          const result = await query.matches(/(\w+\s)+span\s(\w+\s)*(\w+)/).perform()
+          const result = await query
+            .matches(/(\w+\s)+span\s(\w+\s)*(\w+)/)
+            .perform()
           expect(result).toBe(false)
         })
 

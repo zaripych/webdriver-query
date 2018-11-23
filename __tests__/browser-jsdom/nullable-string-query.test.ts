@@ -17,7 +17,9 @@ describe('StringQuery', () => {
 
     describe('.notEmptyOrNull()', () => {
       it('should reject', async () => {
-        return expect(query.notEmptyOrNull().perform()).rejects.toBeInstanceOf(Error)
+        return expect(query.notEmptyOrNull().perform()).rejects.toBeInstanceOf(
+          Error
+        )
       })
     })
 
@@ -79,7 +81,9 @@ describe('StringQuery', () => {
       })
 
       it('given matching regex should resolve', async () => {
-        const result = await query.matches(new RegExp('^Non-Empty String$')).perform()
+        const result = await query
+          .matches(new RegExp('^Non-Empty String$'))
+          .perform()
         expect(result).toBe(true)
       })
 

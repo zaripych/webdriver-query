@@ -1,14 +1,22 @@
 import { QueryExecutor } from '../../src/node/query'
 import { QueryBuilder, IDriver } from '../../src/shared/query'
-import { ArgumentError, ExecutionError, ErrorLike, QueryError } from '../../src/shared/errors'
+import {
+  ArgumentError,
+  ExecutionError,
+  ErrorLike,
+  QueryError,
+} from '../../src/shared/errors'
 import * as selenium from 'selenium-webdriver'
 
 describe('QueryExecutor', () => {
   const precondition = () => Promise.resolve()
 
-  // tslint:disable-next-line
+    // tslint:disable-next-line
   ;(window as any)['sbq'] = { Query: {} }
-  const expectedScript = (query: string = '', withConstructorArg: boolean = false) => {
+  const expectedScript = (
+    query: string = '',
+    withConstructorArg: boolean = false
+  ) => {
     const sub = `new sbq.Query(${withConstructorArg ? '_args[0]' : ''})${query}`
     const script = `
     try {
@@ -190,7 +198,9 @@ describe('QueryExecutor', () => {
       it('should reject with ExecutionError', async () => {
         const executor = new QueryExecutor(driver, precondition)
 
-        await expect(executor.perform(query)).rejects.toBeInstanceOf(ExecutionError)
+        await expect(executor.perform(query)).rejects.toBeInstanceOf(
+          ExecutionError
+        )
 
         const script = expectedScript('.someCall()')
 
@@ -258,15 +268,21 @@ describe('QueryExecutor', () => {
     })
 
     describe('given By.xpath', () => {
-      expect(() => executor.locatorToSelector(selenium.By.xpath('/xpath'))).toThrow()
+      expect(() =>
+        executor.locatorToSelector(selenium.By.xpath('/xpath'))
+      ).toThrow()
     })
 
     describe('given By.linkText', () => {
-      expect(() => executor.locatorToSelector(selenium.By.linkText('TEXT'))).toThrow()
+      expect(() =>
+        executor.locatorToSelector(selenium.By.linkText('TEXT'))
+      ).toThrow()
     })
 
     describe('given By.partialLinkText', () => {
-      expect(() => executor.locatorToSelector(selenium.By.partialLinkText('TEXT'))).toThrow()
+      expect(() =>
+        executor.locatorToSelector(selenium.By.partialLinkText('TEXT'))
+      ).toThrow()
     })
   })
 })

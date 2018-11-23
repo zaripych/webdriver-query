@@ -14,8 +14,11 @@ export default function workaroundEPipeErrors(driver: selenium.WebDriver) {
   // Serialize all webdriver commands to prevent EPIPE errors
   const webdriverSchedule = driver.schedule
 
-  // tslint:disable-next-line
-  ;(driver.schedule as any) = (command: selenium.Command, description: string) => {
+    // tslint:disable-next-line
+  ;(driver.schedule as any) = (
+    command: selenium.Command,
+    description: string
+  ) => {
     currentCommand = currentCommand.then(() =>
       webdriverSchedule.call(driver, command, description).catch(err => {
         currentCommand = Promise.resolve()

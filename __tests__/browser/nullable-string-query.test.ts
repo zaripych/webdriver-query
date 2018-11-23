@@ -38,7 +38,9 @@ describe('NullableStringQuery', () => {
     describe('given a string query that resolves', () => {
       let query: NullableStringQuery
       beforeAll(async () => {
-        query = baseQuery.findElement('#value-attribute-0').getAttribute('value')
+        query = baseQuery
+          .findElement('#value-attribute-0')
+          .getAttribute('value')
       })
 
       it('should resolve', async () => {
@@ -129,7 +131,9 @@ describe('NullableStringQuery', () => {
 
       describe('matches', () => {
         it("should resolve to false when regex is valid and doesn't match", async () => {
-          const result = await query.matches(/(\w+\s)+div\s(\w+\s)*(\w+)/).perform()
+          const result = await query
+            .matches(/(\w+\s)+div\s(\w+\s)*(\w+)/)
+            .perform()
           expect(result).toBe(false)
         })
       })
@@ -152,7 +156,9 @@ describe('NullableStringQuery', () => {
     describe('given a string query that rejects', () => {
       let query: NullableStringQuery
       beforeAll(async () => {
-        query = baseQuery.findElement('#non-existent').getAttribute('non-existent')
+        query = baseQuery
+          .findElement('#non-existent')
+          .getAttribute('non-existent')
       })
 
       it('should reject', async () => {
@@ -184,7 +190,9 @@ describe('NullableStringQuery', () => {
     describe('given a string query that is empty', () => {
       let query: NullableStringQuery
       beforeAll(async () => {
-        query = baseQuery.findElement('#empty-attribute').getAttribute('data-empty')
+        query = baseQuery
+          .findElement('#empty-attribute')
+          .getAttribute('data-empty')
       })
 
       it('should resolve', async () => {

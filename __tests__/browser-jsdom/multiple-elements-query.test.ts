@@ -30,7 +30,14 @@ describe('MultipleElementsQuery', () => {
     describe('findElements().map()', () => {
       it('should work', async () => {
         const result = await query.map(q => q.getText()).perform()
-        expect(result).toEqual(['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'])
+        expect(result).toEqual([
+          'First',
+          'Second',
+          'Third',
+          'Fourth',
+          'Fifth',
+          'Sixth',
+        ])
       })
 
       describe('findElements().map().map()', () => {
@@ -80,7 +87,9 @@ describe('MultipleElementsQuery', () => {
 
     describe('findElements().first(condition)', () => {
       it('given condition that resolves should resolve', async () => {
-        const result = await query.first(q => q.getTagName().equals('span')).perform()
+        const result = await query
+          .first(q => q.getTagName().equals('span'))
+          .perform()
         expect(result.innerHTML).toBe('Fourth')
       })
 
@@ -98,15 +107,17 @@ describe('MultipleElementsQuery', () => {
       })
 
       it("given condition that doesn't match any of the elements should reject", async () => {
-        await expect(query.first(q => q.getTagName().equals('X')).perform()).rejects.toBeInstanceOf(
-          Error
-        )
+        await expect(
+          query.first(q => q.getTagName().equals('X')).perform()
+        ).rejects.toBeInstanceOf(Error)
       })
     })
 
     describe('findElements().filter(condition)', () => {
       it('given condition that matches single element, should resolve to a single element', async () => {
-        const result = await query.filter(q => q.getTagName().equals('span')).perform()
+        const result = await query
+          .filter(q => q.getTagName().equals('span'))
+          .perform()
         expect(result).toBeTruthy()
         expect(result.length).toBe(1)
       })
@@ -133,7 +144,9 @@ describe('MultipleElementsQuery', () => {
 
     describe('findElements().indexOf(condition)', () => {
       it('given condition that resolves should resolve to correct index', async () => {
-        const result = await query.indexOf(q => q.getTagName().equals('span')).perform()
+        const result = await query
+          .indexOf(q => q.getTagName().equals('span'))
+          .perform()
         expect(result).toBe(3)
       })
 
@@ -169,9 +182,9 @@ describe('MultipleElementsQuery', () => {
 
     describe('findElement.first(condition)', () => {
       it('should reject given any condition', async () => {
-        await expect(query.first(q => q.getTagName().equals('X')).perform()).rejects.toBeInstanceOf(
-          Error
-        )
+        await expect(
+          query.first(q => q.getTagName().equals('X')).perform()
+        ).rejects.toBeInstanceOf(Error)
       })
     })
 
@@ -232,7 +245,9 @@ describe('MultipleElementsQuery', () => {
 
     it('parent.map(child.map()) should work', async () => {
       const result = await parent
-        .map(container => container.findElements('.element').map(el => el.getText()))
+        .map(container =>
+          container.findElements('.element').map(el => el.getText())
+        )
         .perform()
       expect(result).toEqual([
         ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'],
@@ -242,10 +257,19 @@ describe('MultipleElementsQuery', () => {
 
     it('parent.map(child.map()).at(0) should work', async () => {
       const result = await parent
-        .map(container => container.findElements('.element').map(el => el.getText()))
+        .map(container =>
+          container.findElements('.element').map(el => el.getText())
+        )
         .at(0)
         .perform()
-      expect(result).toEqual(['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'])
+      expect(result).toEqual([
+        'First',
+        'Second',
+        'Third',
+        'Fourth',
+        'Fifth',
+        'Sixth',
+      ])
     })
   })
 })

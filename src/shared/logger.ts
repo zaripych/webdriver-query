@@ -60,7 +60,8 @@ const log = (
   format: typeof defaultFormat,
   ...arg: any[]
 ) => {
-  const entry = arg.length === 1 && typeof arg[0] === 'function' ? arg[0]() : arg
+  const entry =
+    arg.length === 1 && typeof arg[0] === 'function' ? arg[0]() : arg
   const formatted = format(tracker, entry)
   if (Array.isArray(formatted)) {
     method(...formatted)
@@ -89,14 +90,29 @@ const anyLoggerFactory = (
     return createAnyLogger(id, elapsedGenerator())
   }
 
-  const createAnyLogger = (fixedId?: number, elapsed?: () => number): IAsyncLogger =>
+  const createAnyLogger = (
+    fixedId?: number,
+    elapsed?: () => number
+  ): IAsyncLogger =>
     Object.freeze({
       name,
       debug: (...args: any[]) => {
-        return logWithTracker('debug', methods().debug, fixedId, elapsed, ...args)
+        return logWithTracker(
+          'debug',
+          methods().debug,
+          fixedId,
+          elapsed,
+          ...args
+        )
       },
       error: (...args: any[]) => {
-        return logWithTracker('error', methods().error, fixedId, elapsed, ...args)
+        return logWithTracker(
+          'error',
+          methods().error,
+          fixedId,
+          elapsed,
+          ...args
+        )
       },
       info: (...args: any[]) => {
         return logWithTracker('info', methods().info, fixedId, elapsed, ...args)

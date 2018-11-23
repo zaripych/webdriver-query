@@ -138,7 +138,9 @@ describe('QueryBuilder', () => {
         })
       )
     )
-    expect(q.buildDescription()).toEqual(`waitFor(q => q.findElement(\"child\"))`)
+    expect(q.buildDescription()).toEqual(
+      `waitFor(q => q.findElement(\"child\"))`
+    )
     expect(q.build()).toEqual({
       script: `waitFor(q => q.findElement(_args[0]))`,
       arguments: ['child'],

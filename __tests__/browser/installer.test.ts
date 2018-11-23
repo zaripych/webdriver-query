@@ -35,7 +35,8 @@ describe('LibraryInstaller', () => {
       beforeAll(() => {
         const driver = (webDriver as {}) as IDriver
         installer = new LibraryInstaller(driver, {
-          browserBundlePath: LibraryInstaller.filePaths.browserBundleMinFilePath,
+          browserBundlePath:
+            LibraryInstaller.filePaths.browserBundleMinFilePath,
           installMethod: LibraryInstaller.InstallMethod.executeScript,
         })
       })
@@ -87,11 +88,15 @@ describe('LibraryInstaller', () => {
 
         it('can be created', () => {
           expect(installer).toBeInstanceOf(LibraryInstaller)
-          expect(installer.options.browserBundlePath).toBe('./non-existing-path.js')
+          expect(installer.options.browserBundlePath).toBe(
+            './non-existing-path.js'
+          )
         })
 
         it('fails during installation', () => {
-          return expect(installer.install()).rejects.toBeInstanceOf(BootstrapError)
+          return expect(installer.install()).rejects.toBeInstanceOf(
+            BootstrapError
+          )
         })
       })
 
@@ -103,7 +108,9 @@ describe('LibraryInstaller', () => {
               Promise.reject(new Error('executeScript failed as setup by mock'))
             ),
             executeAsyncScript: jest.fn(() =>
-              Promise.reject(new Error('executeAsyncScript failed as setup by mock'))
+              Promise.reject(
+                new Error('executeAsyncScript failed as setup by mock')
+              )
             ),
             get: jest.fn(() => Promise.resolve()),
           }
@@ -183,11 +190,15 @@ describe('LibraryInstaller', () => {
 
         it('can be created', () => {
           expect(installer).toBeInstanceOf(LibraryInstaller)
-          expect(installer.options.browserBundlePath).toBe('./non-existing-path.js')
+          expect(installer.options.browserBundlePath).toBe(
+            './non-existing-path.js'
+          )
         })
 
         it('fails during installation', () => {
-          return expect(installer.install()).rejects.toBeInstanceOf(BootstrapError)
+          return expect(installer.install()).rejects.toBeInstanceOf(
+            BootstrapError
+          )
         })
       })
 
@@ -195,7 +206,9 @@ describe('LibraryInstaller', () => {
         let driver: IDriver
         beforeAll(() => {
           driver = {
-            executeScript: jest.fn(() => Promise.reject(new Error('executeScript mocked failure'))),
+            executeScript: jest.fn(() =>
+              Promise.reject(new Error('executeScript mocked failure'))
+            ),
             executeAsyncScript: jest.fn(() =>
               Promise.reject(new Error('executeAsyncScript mocked failure'))
             ),

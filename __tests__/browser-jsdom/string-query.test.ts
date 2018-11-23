@@ -79,7 +79,9 @@ describe('StringQuery', () => {
       })
 
       it('given matching regex should resolve', async () => {
-        const result = await query.matches(new RegExp('^Non-Empty String$')).perform()
+        const result = await query
+          .matches(new RegExp('^Non-Empty String$'))
+          .perform()
         expect(result).toBe(true)
       })
 

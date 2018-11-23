@@ -22,25 +22,33 @@ describe('NumberQuery', () => {
 
     describe('.greaterThan(any)', () => {
       it('should reject', async () => {
-        return expect(query.greaterThan(0).perform()).rejects.toBeInstanceOf(Error)
+        return expect(query.greaterThan(0).perform()).rejects.toBeInstanceOf(
+          Error
+        )
       })
     })
 
     describe('.lessThan(any)', () => {
       it('should reject', async () => {
-        return expect(query.greaterThan(0).perform()).rejects.toBeInstanceOf(Error)
+        return expect(query.greaterThan(0).perform()).rejects.toBeInstanceOf(
+          Error
+        )
       })
     })
 
     describe('.greaterThanOrEqual(any)', () => {
       it('should reject', async () => {
-        return expect(query.greaterThanOrEqual(0).perform()).rejects.toBeInstanceOf(Error)
+        return expect(
+          query.greaterThanOrEqual(0).perform()
+        ).rejects.toBeInstanceOf(Error)
       })
     })
 
     describe('.lessThanOrEqual(any)', () => {
       it('should reject', async () => {
-        return expect(query.lessThanOrEqual(0).perform()).rejects.toBeInstanceOf(Error)
+        return expect(
+          query.lessThanOrEqual(0).perform()
+        ).rejects.toBeInstanceOf(Error)
       })
     })
 

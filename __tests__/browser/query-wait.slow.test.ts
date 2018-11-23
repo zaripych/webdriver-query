@@ -1,4 +1,7 @@
-import { describeBrowserTests, IBuildResult } from '../utils/browser-tests-config'
+import {
+  describeBrowserTests,
+  IBuildResult,
+} from '../utils/browser-tests-config'
 import { Query } from '../../src/node/query'
 import { TimeoutError } from '../../src/shared/errors'
 import * as selenium from 'selenium-webdriver'

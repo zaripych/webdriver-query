@@ -25,9 +25,11 @@ describe('Query', () => {
         const numberOfTests = 50
         const elementId = 'id_01'
 
-        const classicApi = () => driver.findElement(selenium.By.id(elementId)).getText()
+        const classicApi = () =>
+          driver.findElement(selenium.By.id(elementId)).getText()
 
-        const queryApi = () => query.findElement(selenium.By.id(elementId)).getText()
+        const queryApi = () =>
+          query.findElement(selenium.By.id(elementId)).getText()
 
         const testClassicApi = async () => {
           const elapsed = elapsedGenerator()
@@ -127,9 +129,13 @@ describe('Query', () => {
         const queryElapsed = await testQueryApi()
 
         // tslint:disable-next-line:no-console
-        console.log('for ' + name + ' `driver.execute(...)` took ' + classicElapsed + 'ms')
+        console.log(
+          'for ' + name + ' `driver.execute(...)` took ' + classicElapsed + 'ms'
+        )
         // tslint:disable-next-line:no-console
-        console.log('for ' + name + ' `query.execute(...)` took ' + queryElapsed + 'ms')
+        console.log(
+          'for ' + name + ' `query.execute(...)` took ' + queryElapsed + 'ms'
+        )
 
         workaround.undo()
       }

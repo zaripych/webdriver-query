@@ -133,9 +133,9 @@ describe('DomLibrary', () => {
         }
 
         it('should throw', () => {
-          expect(() => lib.selectFirst(params.selector, params.parent)).toThrowError(
-            Errors.NoSuchElementError
-          )
+          expect(() =>
+            lib.selectFirst(params.selector, params.parent)
+          ).toThrowError(Errors.NoSuchElementError)
         })
       })
 
@@ -170,9 +170,9 @@ describe('DomLibrary', () => {
         }
 
         it('should work', () => {
-          expect(() => lib.selectFirst(params.selector, params.parent)).toThrowError(
-            Errors.NoSuchElementError
-          )
+          expect(() =>
+            lib.selectFirst(params.selector, params.parent)
+          ).toThrowError(Errors.NoSuchElementError)
         })
       })
 
@@ -195,9 +195,9 @@ describe('DomLibrary', () => {
         }
 
         it('should throw', () => {
-          expect(() => lib.selectFirst(params.selector, params.parent)).toThrowError(
-            Errors.ArgumentError
-          )
+          expect(() =>
+            lib.selectFirst(params.selector, params.parent)
+          ).toThrowError(Errors.ArgumentError)
         })
       })
     })
@@ -222,9 +222,9 @@ describe('DomLibrary', () => {
         }
 
         it('should throw', () => {
-          expect(() => lib.selectSingle(params.selector, params.parent)).toThrowError(
-            Errors.NoSuchElementError
-          )
+          expect(() =>
+            lib.selectSingle(params.selector, params.parent)
+          ).toThrowError(Errors.NoSuchElementError)
         })
       })
 
@@ -235,9 +235,9 @@ describe('DomLibrary', () => {
         }
 
         it('should work', () => {
-          expect(() => lib.selectSingle(params.selector, params.parent)).toThrowError(
-            Errors.SelectorError
-          )
+          expect(() =>
+            lib.selectSingle(params.selector, params.parent)
+          ).toThrowError(Errors.SelectorError)
         })
       })
 
@@ -260,9 +260,9 @@ describe('DomLibrary', () => {
         }
 
         it('should work', () => {
-          expect(() => lib.selectSingle(params.selector, params.parent)).toThrowError(
-            Errors.NoSuchElementError
-          )
+          expect(() =>
+            lib.selectSingle(params.selector, params.parent)
+          ).toThrowError(Errors.NoSuchElementError)
         })
       })
 
@@ -273,9 +273,9 @@ describe('DomLibrary', () => {
         }
 
         it('should work', () => {
-          expect(() => lib.selectSingle(params.selector, params.parent)).toThrowError(
-            Errors.SelectorError
-          )
+          expect(() =>
+            lib.selectSingle(params.selector, params.parent)
+          ).toThrowError(Errors.SelectorError)
         })
       })
 
@@ -286,9 +286,9 @@ describe('DomLibrary', () => {
         }
 
         it('should throw', () => {
-          expect(() => lib.selectSingle(params.selector, params.parent)).toThrowError(
-            Errors.ArgumentError
-          )
+          expect(() =>
+            lib.selectSingle(params.selector, params.parent)
+          ).toThrowError(Errors.ArgumentError)
         })
       })
     })
@@ -356,9 +356,11 @@ describe('DomLibrary', () => {
         select.onfocus = selectOnFocus
       })
 
-      document.querySelectorAll('#sel option').forEach((option: HTMLOptionElement) => {
-        option.onclick = optionsOnClick
-      })
+      document
+        .querySelectorAll('#sel option')
+        .forEach((option: HTMLOptionElement) => {
+          option.onclick = optionsOnClick
+        })
 
       return {
         optionsOnClick,
@@ -369,7 +371,8 @@ describe('DomLibrary', () => {
       }
     }
 
-    const selectElement = () => document.getElementById('sel') as HTMLSelectElement
+    const selectElement = () =>
+      document.getElementById('sel') as HTMLSelectElement
 
     const getOpt = (i: number) => document.getElementById(`opt${i}`)
 
@@ -390,7 +393,8 @@ describe('DomLibrary', () => {
       })
 
       describe('when selecting single element that exists', () => {
-        const select = () => lib.imitateSelection(selectElement(), { value: 'Option 1' })
+        const select = () =>
+          lib.imitateSelection(selectElement(), { value: 'Option 1' })
 
         it('should work', () => {
           expect(lib.isSelected(getOpt(1))).toBe(true)
@@ -409,7 +413,8 @@ describe('DomLibrary', () => {
       })
 
       describe('when selecting single element that exists, different from current selection', () => {
-        const select = () => lib.imitateSelection(selectElement(), { value: 'Option 2' })
+        const select = () =>
+          lib.imitateSelection(selectElement(), { value: 'Option 2' })
 
         it('should work', () => {
           expect(lib.isSelected(getOpt(1))).toBe(true)
@@ -430,7 +435,8 @@ describe('DomLibrary', () => {
       })
 
       describe('when selecting element that doesnt exists', () => {
-        const select = () => lib.imitateSelection(selectElement(), { value: 'Alt Option 1' })
+        const select = () =>
+          lib.imitateSelection(selectElement(), { value: 'Alt Option 1' })
 
         it('should work', () => {
           expect(select).toThrow()
@@ -439,7 +445,10 @@ describe('DomLibrary', () => {
 
       describe('when selecting multiple elements', () => {
         const select = () =>
-          lib.imitateSelection(selectElement(), [{ value: 'Option 1' }, { value: 'Option 2' }])
+          lib.imitateSelection(selectElement(), [
+            { value: 'Option 1' },
+            { value: 'Option 2' },
+          ])
 
         it('should throw', () => {
           expect(select).toThrow()
@@ -464,7 +473,8 @@ describe('DomLibrary', () => {
       })
 
       describe('when selecting single element that exists', () => {
-        const select = () => lib.imitateSelection(selectElement(), { text: 'Option 3' })
+        const select = () =>
+          lib.imitateSelection(selectElement(), { text: 'Option 3' })
 
         it('should work', () => {
           expect(lib.isSelected(getOpt(1))).toBe(false)
@@ -484,7 +494,8 @@ describe('DomLibrary', () => {
       })
 
       describe('when selecting single element that exists, different from current selection', () => {
-        const select = () => lib.imitateSelection(selectElement(), { value: 'Option 2' })
+        const select = () =>
+          lib.imitateSelection(selectElement(), { value: 'Option 2' })
 
         it('should work', () => {
           expect(lib.isSelected(getOpt(3))).toBe(true)
@@ -522,7 +533,8 @@ describe('DomLibrary', () => {
       })
 
       describe('when selecting single element that exists', () => {
-        const select = () => lib.imitateSelection(selectElement(), { text: 'Option 3' })
+        const select = () =>
+          lib.imitateSelection(selectElement(), { text: 'Option 3' })
 
         it('should work', () => {
           expect(lib.isSelected(getOpt(1))).toBe(false)
@@ -546,7 +558,10 @@ describe('DomLibrary', () => {
 
       describe('when selecting multiple elements that exists', () => {
         const select = () =>
-          lib.imitateSelection(selectElement(), [{ text: 'Option 3' }, { text: 'Option 4' }])
+          lib.imitateSelection(selectElement(), [
+            { text: 'Option 3' },
+            { text: 'Option 4' },
+          ])
 
         it('should work', () => {
           expect(lib.isSelected(getOpt(1))).toBe(false)
@@ -591,7 +606,8 @@ describe('DomLibrary', () => {
       })
 
       describe('when selecting single element that exists', () => {
-        const select = () => lib.imitateSelection(selectElement(), { text: 'Option 3' })
+        const select = () =>
+          lib.imitateSelection(selectElement(), { text: 'Option 3' })
 
         it('should work', () => {
           expect(lib.isSelected(getOpt(1))).toBe(false)
@@ -627,7 +643,10 @@ describe('DomLibrary', () => {
 
       describe('when selecting multiple elements that exists', () => {
         const select = () =>
-          lib.imitateSelection(selectElement(), [{ text: 'Option 3' }, { text: 'Option 4' }])
+          lib.imitateSelection(selectElement(), [
+            { text: 'Option 3' },
+            { text: 'Option 4' },
+          ])
 
         it('should work', () => {
           expect(lib.isSelected(getOpt(1))).toBe(false)

@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width" />
     <script type="application/javascript">
       const logEvent = (...args) => {
-        const logs = document.getElementById("eventLog")
+        const logs = document.getElementById('eventLog')
         const count = logs.children.length
-        const entry = document.createElement("div")
-        entry.setAttribute("data-id", count + 1)
+        const entry = document.createElement('div')
+        entry.setAttribute('data-id', count + 1)
         entry.innerText = JSON.stringify([...args])
         logs.appendChild(entry)
       }
@@ -25,35 +25,35 @@
             type: eventName,
             state: {
               value: evt.target.value,
-              selected: evt.target.selected
+              selected: evt.target.selected,
             },
-            event: evt
+            event: evt,
           })
           evt.preventDefault()
           evt.stopPropagation()
         })
       }
 
-      window.addEventListener("load", function(win, ev) {
-        document.getElementById("value-attribute-1").value = "Value set by JS"
-        document.getElementById("value-attribute-2").value = "Value set by JS"
+      window.addEventListener('load', function(win, ev) {
+        document.getElementById('value-attribute-1').value = 'Value set by JS'
+        document.getElementById('value-attribute-2').value = 'Value set by JS'
 
         const allEvents = [
-          "click",
-          "change",
-          "blur",
-          "focus",
-          "select"
+          'click',
+          'change',
+          'blur',
+          'focus',
+          'select',
           // "keydown",
           // "keyup",
           // "keypress",
         ]
 
         const subscribeTo = [
-          "#select_id",
-          "#select_id option",
-          "#select_multiple_id",
-          "#select_multiple_id option"
+          '#select_id',
+          '#select_id option',
+          '#select_multiple_id',
+          '#select_multiple_id option',
         ]
 
         subscribeTo.forEach(selector => {
@@ -64,27 +64,27 @@
       })
 
       setTimeout(function() {
-        document.getElementById("timerTarget").innerHTML = "10"
+        document.getElementById('timerTarget').innerHTML = '10'
         setInterval(function() {
           var value = parseInt(
-            document.getElementById("timerTarget").innerHTML,
+            document.getElementById('timerTarget').innerHTML,
             10
           )
-          document.getElementById("timerTarget").innerHTML = value + 1
+          document.getElementById('timerTarget').innerHTML = value + 1
         }, 1000)
 
-        var div = document.createElement("div")
-        div.innerHTML = "Spinning..."
-        div.id = "simulatedSpinner"
+        var div = document.createElement('div')
+        div.innerHTML = 'Spinning...'
+        div.id = 'simulatedSpinner'
 
-        document.getElementById("spinnerInsertTarget").appendChild(div)
+        document.getElementById('spinnerInsertTarget').appendChild(div)
 
         setInterval(function() {
-          const text = document.getElementById("spinnerInsertTarget").innerHTML
-          if (!text || text === "Loaded") {
-            document.getElementById("spinnerInsertTarget").appendChild(div)
+          const text = document.getElementById('spinnerInsertTarget').innerHTML
+          if (!text || text === 'Loaded') {
+            document.getElementById('spinnerInsertTarget').appendChild(div)
           } else {
-            document.getElementById("spinnerInsertTarget").innerHTML = "Loaded"
+            document.getElementById('spinnerInsertTarget').innerHTML = 'Loaded'
           }
         }, 3000)
       }, 3000)

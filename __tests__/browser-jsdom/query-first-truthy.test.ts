@@ -1,4 +1,9 @@
-import { Query, AnyQuery, StringQuery, ConditionQuery } from '../../src/browser/query'
+import {
+  Query,
+  AnyQuery,
+  StringQuery,
+  ConditionQuery,
+} from '../../src/browser/query'
 import { OutOfOptionsError } from '../../src/shared/errors'
 
 describe('Query', () => {

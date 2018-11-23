@@ -37,7 +37,9 @@ describe('Query', () => {
         .perform()
     ).resolves.toBe('Data Loaded...')
 
-    await expect(query.findElement('#spinner').perform()).rejects.toBeInstanceOf(NoSuchElementError)
+    await expect(
+      query.findElement('#spinner').perform()
+    ).rejects.toBeInstanceOf(NoSuchElementError)
   })
 
   it('.waitUntil() waits until resolved', async () => {
@@ -75,7 +77,9 @@ describe('Query', () => {
         .perform()
     ).resolves.toBe('Data Loaded...')
 
-    await expect(query.findElement('#spinner').perform()).rejects.toBeInstanceOf(NoSuchElementError)
+    await expect(
+      query.findElement('#spinner').perform()
+    ).rejects.toBeInstanceOf(NoSuchElementError)
   })
 
   it('.retry(timeout) waits until resolved', async () => {

@@ -53,7 +53,10 @@ describe('Query', () => {
         it('waits until it is set and then reset', async () => {
           const result = await query
             .waitUntil(q => q.execute(() => trigger).truthy(), waitOptions)
-            .waitUntil(q => q.execute(() => !trigger).truthy(), longerWaitOptions)
+            .waitUntil(
+              q => q.execute(() => !trigger).truthy(),
+              longerWaitOptions
+            )
             .execute(() => trigger)
             .asBoolean()
             .perform()
@@ -82,7 +85,10 @@ describe('Query', () => {
           try {
             await query
               .waitUntil(q => q.execute(() => trigger).truthy(), waitOptions)
-              .waitUntil(q => q.execute(() => !trigger).truthy(), longerWaitOptions)
+              .waitUntil(
+                q => q.execute(() => !trigger).truthy(),
+                longerWaitOptions
+              )
               .execute(() => trigger)
               .asBoolean()
               .perform()

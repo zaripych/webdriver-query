@@ -161,7 +161,9 @@ describe('Query', () => {
 
     describe('can be used to build custom scripts', () => {
       it('should work', async () => {
-        const queryResult = await subQuery.execute(v => v + ' - Custom').perform()
+        const queryResult = await subQuery
+          .execute(v => v + ' - Custom')
+          .perform()
         expect(queryResult).toBe('Non empty element - Custom')
       })
     })
