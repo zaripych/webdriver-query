@@ -6,7 +6,13 @@ import {
   BootstrapError,
 } from '../../shared/errors'
 
-import { QueryBuilder, IConfig, IDriver, IAsyncLogger, noOpLogger } from '../../shared'
+import {
+  QueryBuilder,
+  IConfig,
+  IDriver,
+  IAsyncLogger,
+  noOpLogger,
+} from '../../shared'
 import { locatorToSelector } from './locator-to-selector'
 import { IErrorLike } from '../../shared/errors/error-like'
 import { PageReloadedError } from '../../shared/errors/page-reloaded-error'
@@ -117,24 +123,30 @@ export class QueryExecutor {
       });
     }`
 
-    const log = this.logger.debug(() => ['executing script: ', call.script, call.arguments])
+    const log = this.logger.debug(() => [
+      'executing script: ',
+      call.script,
+      call.arguments,
+    ])
 
     const executeScriptNoRetry = () =>
       this.precondition()
         .then(() =>
-          driver.executeAsyncScript<IScriptResult<T>>(script, ...call.arguments).then(value => {
-            if (value.error) {
-              if (ErrorLike.isErrorLike(value.error)) {
-                throw ErrorLike.createError(value.error)
-              } else {
-                throw new Error(value.error)
+          driver
+            .executeAsyncScript<IScriptResult<T>>(script, ...call.arguments)
+            .then(value => {
+              if (value.error) {
+                if (ErrorLike.isErrorLike(value.error)) {
+                  throw ErrorLike.createError(value.error)
+                } else {
+                  throw new Error(value.error)
+                }
               }
-            }
-            log.debug(() => ['finished with value', value])
+              log.debug(() => ['finished with value', value])
 
-            // this check below is to ensure same behavior as WebDriver
-            return restoreValue(value) as T
-          })
+              // this check below is to ensure same behavior as WebDriver
+              return restoreValue(value) as T
+            })
         )
         .catch((err: Error) => {
           log.debug(() => ['finished with error', err.name, err.message])
@@ -159,7 +171,9 @@ export class QueryExecutor {
                 )
               )
             }
-            return Promise.reject(new ExecutionError(`An error occurred`, err, query))
+            return Promise.reject(
+              new ExecutionError(`An error occurred`, err, query)
+            )
           } else {
             return Promise.reject(err)
           }
@@ -190,6 +204,8 @@ export class QueryExecutor {
   }
 
   private isPageReloadError(error: Error): boolean {
-    return QueryExecutor.pageReloadErrors.some(pattern => pattern.test(error.message))
+    return QueryExecutor.pageReloadErrors.some(pattern =>
+      pattern.test(error.message)
+    )
   }
 }

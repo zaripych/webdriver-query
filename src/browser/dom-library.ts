@@ -1,5 +1,11 @@
 import * as Errors from '../shared/errors'
-import { Selector, IRect, ISelectedOption, QueryBuilder, SelectOption } from '../shared/query'
+import {
+  Selector,
+  IRect,
+  ISelectedOption,
+  QueryBuilder,
+  SelectOption,
+} from '../shared/query'
 // tslint:disable-next-line:no-var-requires
 const jquery = require('jquery') as JQueryStatic
 
@@ -79,7 +85,10 @@ export class DomLibrary {
   ): HTMLElement => {
     const result = this.select(selector, parent, query)
     if (!result || result.length === 0) {
-      throw new Errors.NoSuchElementError(`Selector '${selector}' returned no elements`, query)
+      throw new Errors.NoSuchElementError(
+        `Selector '${selector}' returned no elements`,
+        query
+      )
     }
     return result[0]
   }
@@ -91,13 +100,17 @@ export class DomLibrary {
   ): HTMLElement => {
     const result = this.select(selector, parent, query)
     if (!result || result.length === 0) {
-      throw new Errors.NoSuchElementError(`Selector '${selector}' returned no elements`, query)
+      throw new Errors.NoSuchElementError(
+        `Selector '${selector}' returned no elements`,
+        query
+      )
     }
     if (result.length === 1) {
       return result[0]
     } else {
       throw new Errors.SelectorError(
-        `Selector '${selector}' returned more ` + `than one element but expected only one`,
+        `Selector '${selector}' returned more ` +
+          `than one element but expected only one`,
         query
       )
     }
@@ -111,7 +124,7 @@ export class DomLibrary {
     const val: any = (element as any)[name]
 
     if (typeof val === 'string') {
-      return val
+      return val || ''
     }
 
     if (typeof val === 'boolean') {
@@ -152,7 +165,8 @@ export class DomLibrary {
 
   public isDisplayed = (element: HTMLElement): boolean => {
     return (
-      this.cssOf(element, 'display') !== 'none' && this.cssOf(element, 'visibility') !== 'hidden'
+      this.cssOf(element, 'display') !== 'none' &&
+      this.cssOf(element, 'visibility') !== 'hidden'
     )
   }
 
@@ -213,7 +227,10 @@ export class DomLibrary {
       typeof element.tagName !== 'string' ||
       element.tagName.toLowerCase() !== 'select'
     ) {
-      throw new Errors.ArgumentError(`Expected 'select' element to be target for selection`, query)
+      throw new Errors.ArgumentError(
+        `Expected 'select' element to be target for selection`,
+        query
+      )
     }
 
     const q = jquery(element)
@@ -239,7 +256,10 @@ export class DomLibrary {
       typeof element.tagName !== 'string' ||
       element.tagName.toLowerCase() !== 'select'
     ) {
-      throw new Errors.ArgumentError(`Expected 'select' element to be target for selection`, query)
+      throw new Errors.ArgumentError(
+        `Expected 'select' element to be target for selection`,
+        query
+      )
     }
 
     const isMultiple = this.attributeOf(element, 'multiple') === 'true'
@@ -254,7 +274,11 @@ export class DomLibrary {
 
     const allOptions = q.find('option').get() as HTMLOptionElement[]
 
-    const { optionsByValue, optionsByText, selectedToUnselect } = allOptions.reduceRight(
+    const {
+      optionsByValue,
+      optionsByText,
+      selectedToUnselect,
+    } = allOptions.reduceRight(
       (acc, opt) => {
         acc.optionsByText.set(opt.text, opt)
         acc.optionsByValue.set(opt.value, opt)
@@ -281,7 +305,9 @@ export class DomLibrary {
 
     const filterOptionsToSelectAndUnselect = (one: SelectOption) => {
       const finder =
-        'text' in one ? () => optionsByText.get(one.text) : () => optionsByValue.get(one.value)
+        'text' in one
+          ? () => optionsByText.get(one.text)
+          : () => optionsByValue.get(one.value)
 
       const found = finder()
 
@@ -349,7 +375,10 @@ export class DomLibrary {
     }
   }
 
-  private domAttributeOf = (element: HTMLElement, name: string): string | null => {
+  private domAttributeOf = (
+    element: HTMLElement,
+    name: string
+  ): string | null => {
     const val = jquery(element).attr(name)
     return this.propToString(val)
   }

@@ -15,10 +15,15 @@
       "request": "launch",
       "name": "Jest Current Test File",
       "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
-      "args": ["--verbose", "-i", "--testPathPattern", "${fileBasenameNoExtension}"],
+      "args": [
+        "--verbose",
+        "-i",
+        "--testPathPattern",
+        "${fileBasenameNoExtension}"
+      ],
       "autoAttachChildProcesses": true,
       "env": {
-        "TEST_BROWSERS_PATTERN": "chrome"
+        "TEST_BROWSERS_PATTERN": "edge"
       }
     }
   ]

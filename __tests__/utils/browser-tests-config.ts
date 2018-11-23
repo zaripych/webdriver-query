@@ -1,6 +1,5 @@
 import 'chromedriver'
 import 'geckodriver'
-import 'edgedriver'
 import * as path from 'path'
 import * as selenium from 'selenium-webdriver'
 
@@ -12,6 +11,8 @@ import { platform } from 'os'
 // tslint:disable:no-submodule-imports
 import * as chrome from 'selenium-webdriver/chrome'
 import * as safari from 'selenium-webdriver/safari'
+
+import workaroundEPipeErrors from './workaround-epipe-errors'
 
 interface IDriverBuilder {
   name: string
@@ -65,7 +66,9 @@ const getDrivers: () => IDriverBuilder[] = () => {
     allBuilders.push({
       name: 'edge',
       build: () => {
-        const driver = new selenium.Builder().forBrowser(selenium.Browser.EDGE).build()
+        const driver = new selenium.Builder()
+          .forBrowser(selenium.Browser.EDGE)
+          .build()
 
         return driver
       },
@@ -81,10 +84,11 @@ const getDrivers: () => IDriverBuilder[] = () => {
 
 export interface IBuildResult {
   name: string
-  driver: selenium.ThenableWebDriver
+  driver: selenium.WebDriver
   query: Query
   installer: LibraryInstaller
   testPagePath: string
+  workaround: { undo: () => void }
   refresh: () => Promise<void>
 }
 
@@ -106,19 +110,22 @@ const buildAll: (
     ...defaultTestOpts,
     ...testOpts,
   }
-  const testPagePath = 'file://' + path.resolve(__dirname, '../test-pages/' + opts.testPageName)
-  const driver = builder.build()
+  const testPagePath =
+    'file://' + path.resolve(__dirname, '../test-pages/' + opts.testPageName)
+  const driver = await builder.build()
   const installer = new LibraryInstaller(driver)
   const query = new Query(driver, queryConfig)
   if (opts.shouldLoadAtStart) {
     await query.get(testPagePath)
   }
+  const workaround = workaroundEPipeErrors(driver)
   return {
     name: builder.name,
     driver,
     installer,
     query,
     testPagePath,
+    workaround,
     refresh: async () => {
       await query.get(testPagePath)
     },
@@ -131,7 +138,8 @@ type TestRunFunc = (
   testDataBuilder: (
     props?: ITestOpts,
     queryConfig?: Partial<IConfig & IQueryConfig>
-  ) => Promise<IBuildResult>
+  ) => Promise<IBuildResult>,
+  testDataCleanup?: (result: IBuildResult) => Promise<void>
 ) => void
 
 export const describeBrowserTests = (tests: TestRunFunc) => {
@@ -142,55 +150,31 @@ export const describeBrowserTests = (tests: TestRunFunc) => {
 
   for (const driverBuilder of getDrivers()) {
     describe(`given ${driverBuilder.name}`, () => {
-      let resultPromise: Promise<IBuildResult>
+      const builtDrivers: Array<Promise<IBuildResult>> = []
 
-      tests((props?: ITestOpts, queryConfig?: Partial<IConfig & IQueryConfig>) => {
-        return (resultPromise = buildAll(driverBuilder, queryConfig, props))
-      })
-
-      const printBrowserLogs = async () => {
-        // tslint:disable:no-console
-        const result = await resultPromise
-        const driver = result.driver
-        const logs = await driver
-          .manage()
-          .logs()
-          .get(selenium.logging.Type.BROWSER)
-        if (logs && logs.length > 0) {
-          for (const entry of logs) {
-            switch (entry.level) {
-              case selenium.logging.Level.SEVERE:
-                console.error(entry.message)
-                break
-              case selenium.logging.Level.DEBUG:
-                console.debug(entry.message)
-                break
-              case selenium.logging.Level.INFO:
-                console.info(entry.message)
-                break
-              case selenium.logging.Level.WARNING:
-                console.warn(entry.message)
-                break
-              default:
-                console.log(entry.message)
-                break
-            }
-          }
-        }
-        // tslint:enable:no-console
-      }
-
-      afterEach(async () => {
-        if (driverBuilder.name.indexOf('chrome') >= 0) {
-          await printBrowserLogs()
-        }
-      })
-
-      afterAll(async () => {
-        const result = await resultPromise
+      const cleanup = async (result: IBuildResult) => {
         const driver = result.driver
         await driver.close()
         await driver.quit()
+        result.workaround.undo()
+      }
+
+      tests(
+        (props?: ITestOpts, queryConfig?: Partial<IConfig & IQueryConfig>) => {
+          const promise = buildAll(driverBuilder, queryConfig, props)
+          builtDrivers.push(promise)
+          return promise
+        },
+        cleanup
+      )
+
+      afterAll(async () => {
+        const results = await Promise.all(builtDrivers)
+        results.reduce(async (acc, result) => {
+          await acc
+
+          await cleanup(result)
+        }, Promise.resolve())
       })
     })
   }
