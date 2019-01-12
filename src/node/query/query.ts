@@ -22,15 +22,19 @@ import { ElementQuery } from './element-query'
 import { IBatchQuery, BatchQueryResult } from './query-batch'
 import { ObjectQuery } from './object-query'
 import { ConditionQuery } from './condition-query'
-import { LibraryInstaller } from '../library-installer'
+import { LibraryInstaller, InstallMethod } from '../library-installer'
 import { ArrayQuery } from './array-query'
 import { OneOfQueries } from './one-of-query'
 
 export interface IQueryConfig {
   shouldLogOnServer: boolean
+  installMethod?: InstallMethod
+  browserBundlePath?: string
 }
 
-const filterConfig = (config?: Partial<IConfig & IQueryConfig>): Partial<IConfig> | undefined => {
+const filterConfig = (
+  config?: Partial<IConfig & IQueryConfig>
+): Partial<IConfig> | undefined => {
   if (!config) {
     return
   }
@@ -71,7 +75,13 @@ export class Query<
       (buildingBlock && buildingBlock.logger) ||
       (config && config.shouldLogOnServer ? consoleLogger() : noOpLogger)
 
-    const installerArg = installer || new LibraryInstaller(driver)
+    const installerConfig = config && {
+      browserBundlePath: config.browserBundlePath,
+      installMethod: config.installMethod,
+    }
+
+    const installerArg =
+      installer || new LibraryInstaller(driver, installerConfig)
 
     this.precondition = precondition || (() => Promise.resolve())
 
@@ -132,7 +142,10 @@ export class Query<
       return this.findElements(locatorToSelector(selector))
     }
 
-    const query = this.queryBuildingBlock.query.appendCall('findElements', selector)
+    const query = this.queryBuildingBlock.query.appendCall(
+      'findElements',
+      selector
+    )
 
     return new ArrayQuery(
       this.build(query),
@@ -140,12 +153,17 @@ export class Query<
     )
   }
 
-  public findElement(selector: Selector | selenium.By): ElementQuery<TElement, TElementPromise> {
+  public findElement(
+    selector: Selector | selenium.By
+  ): ElementQuery<TElement, TElementPromise> {
     if (isSeleniumLocator(selector)) {
       return this.findElement(locatorToSelector(selector))
     }
 
-    const query = this.queryBuildingBlock.query.appendCall('findElement', selector)
+    const query = this.queryBuildingBlock.query.appendCall(
+      'findElement',
+      selector
+    )
 
     return new ElementQuery<TElement, TElementPromise>(this.build(query))
   }
@@ -154,7 +172,10 @@ export class Query<
     script: string | ((...args: any[]) => T),
     ...args: any[]
   ): AnyQuery {
-    const query = this.queryBuildingBlock.query.appendCall('execute', ...[script, ...args])
+    const query = this.queryBuildingBlock.query.appendCall(
+      'execute',
+      ...[script, ...args]
+    )
     return new AnyQuery(this.build(query))
   }
 
@@ -168,9 +189,10 @@ export class Query<
     return new ObjectQuery<BatchQueryResult<Y>>(this.build(query))
   }
 
-  public sequence<I extends OneOfQueries, T extends Array<I | false | undefined | null>>(
-    queries: (q: this) => T
-  ) {
+  public sequence<
+    I extends OneOfQueries,
+    T extends Array<I | false | undefined | null>
+  >(queries: (q: this) => T) {
     const filter = (self: this) => queries(self).filter(value => !!value)
     const query = this.queryBuildingBlock.query.appendCall(
       'sequence',
@@ -222,13 +244,18 @@ export class Query<
 export class ThenableQuery extends Query {
   public perform(): Promise<void> {
     if (this.queryBuildingBlock.query.numberOfCalls > 0) {
-      return this.queryBuildingBlock.executor.perform(this.queryBuildingBlock.query)
+      return this.queryBuildingBlock.executor.perform(
+        this.queryBuildingBlock.query
+      )
     } else {
       return this.precondition()
     }
   }
 
-  public then(onfulfilled?: OnFulfilled<void, void>, onrejected?: OnRejected<void>) {
+  public then(
+    onfulfilled?: OnFulfilled<void, void>,
+    onrejected?: OnRejected<void>
+  ) {
     return this.perform().then(onfulfilled, onrejected)
   }
 
