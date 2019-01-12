@@ -1,6 +1,6 @@
 {
   "name": "webdriver-query",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Query whole pages, multiple objects, elements, forms, tables from Selenium WebDriver using a single query",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
