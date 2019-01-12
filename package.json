@@ -29,13 +29,24 @@
   },
   "author": "@zaripych",
   "license": "MIT",
+  "keywords": [
+    "webdriver",
+    "selenium",
+    "query",
+    "batch"
+  ],
   "repository": {
-    "url": "git@github.com:zaripych/webdriver-query.git"
+    "type": "git",
+    "url": "git+https://github.com/zaripych/webdriver-query.git"
   },
   "files": [
     "src",
     "dist"
   ],
+  "bugs": {
+    "url": "https://github.com/zaripych/webdriver-query/issues"
+  },
+  "homepage": "https://github.com/zaripych/webdriver-query#readme",
   "publishConfig": {
     "access": "public"
   },
