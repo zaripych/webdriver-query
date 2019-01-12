@@ -24,7 +24,7 @@
     "run-examples-query": "yarn run test-all -- -i --testPathPattern \"__tests__/browser/examples/.*\" --testNamePattern \"query api\" --no-coverage --verbose",
     "run-examples-driver": "yarn run test-all -- -i --testPathPattern \"__tests__/browser/examples/.*\" --testNamePattern \"driver api\" --no-coverage --verbose",
     "prettier": "prettier",
-    "prepublish": "yarn run build",
+    "prepublishOnly": "yarn run build",
     "semantic-release": "semantic-release"
   },
   "author": "@zaripych",
@@ -52,6 +52,9 @@
     "@babel/preset-env": "7.1.0",
     "@babel/preset-typescript": "7.1.0",
     "@babel/runtime": "7.0.0",
+    "@commitlint/cli": "7.3.1",
+    "@commitlint/config-conventional": "7.3.1",
+    "@semantic-release/git": "7.0.7",
     "@types/jest": "22.2.3",
     "@types/jquery": "3.2.16",
     "@types/node": "9.6.6",
@@ -64,7 +67,7 @@
     "css.escape": "1.5.1",
     "escape-string-regexp": "1.0.5",
     "geckodriver": "1.12.2",
-    "husky": "1.2.0",
+    "husky": "1.3.1",
     "jest": "23.6.0",
     "jquery": "3.3.1",
     "jsdom": "11.6.2",
@@ -104,5 +107,10 @@
     "coveragePathIgnorePatterns": [
       "__tests__/utils"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
