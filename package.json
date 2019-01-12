@@ -41,7 +41,7 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "selenium-webdriver": "3.6.0"
+    "selenium-webdriver": ">= 3.6.0"
   },
   "devDependencies": {
     "@babel/cli": "7.1.0",
