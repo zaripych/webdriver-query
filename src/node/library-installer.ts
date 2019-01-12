@@ -53,8 +53,8 @@ export class LibraryInstaller {
   ) {
     const props = {
       browserBundlePath:
-        (options && options.browserBundlePath) || browserBundlePath,
-      installMethod: (options && options.installMethod) || 'scriptTag',
+        (options && options.browserBundlePath) || browserBundleMinFilePath,
+      installMethod: (options && options.installMethod) || 'executeScript',
     }
 
     if (

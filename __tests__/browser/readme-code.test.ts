@@ -2,8 +2,8 @@ import * as selenium from 'selenium-webdriver'
 import { Query } from '../../src/node/query'
 import 'chromedriver'
 
-describe('README', () => {
-  it('driver code works', async () => {
+describe.skip('README', () => {
+  it.skip('driver code works', async () => {
     const driver = new selenium.Builder().forBrowser('chrome').build()
 
     await driver.get('https://www.google.com/search?q=WebDriver%20protocol')
@@ -18,7 +18,7 @@ describe('README', () => {
     expect(allText.length).toBeGreaterThan(0)
   })
 
-  it('query code works', async () => {
+  it.skip('query code works', async () => {
     const driver = new selenium.Builder().forBrowser('chrome').build()
 
     const query = new Query(driver, {})
