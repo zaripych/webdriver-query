@@ -7,6 +7,8 @@
 
 ## What this does and why you should use it?
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zaripych/webdriver-query.svg)](https://greenkeeper.io/)
+
 The library allows you to query whole pages, multiple objects or elements, forms, tables from Selenium WebDriver supported browser using a single query. If you have a test that has to load a lot of data from the browser then you can use this library to improve its performance.
 
 ## Features
